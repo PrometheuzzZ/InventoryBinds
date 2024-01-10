@@ -10,7 +10,7 @@
   "contact": {
     "homepage": "https://modrinth.com/mod/inventory-binds"
   },
-  "license": "MIT",
+  "license": "gnu gpl-3.0",
   "icon": "assets/inventorybinds/icon.png",
   "environment": "*",
   "entrypoints": {
