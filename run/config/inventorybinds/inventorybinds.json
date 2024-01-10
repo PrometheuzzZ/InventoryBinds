@@ -1,0 +1,19 @@
+{
+  "buttons":[
+    {
+      "name":"Ender chest",
+      "bind":"/ec",
+      "item_id":"ender_chest"
+    },
+    {
+      "name":"TP home",
+      "bind":"!home ",
+      "item_id":"beacon"
+    },
+    {
+      "name":"Say hello",
+      "bind":"Hello all!",
+      "item_id":"spruce_sign"
+    }
+  ]
+}

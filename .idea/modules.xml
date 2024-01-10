@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/InventoryBinds.main.iml" filepath="$PROJECT_DIR$/.idea/modules/InventoryBinds.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/InventoryBinds.test.iml" filepath="$PROJECT_DIR$/.idea/modules/InventoryBinds.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/pj.inventorybinds.ru.InventoryBinds.main.iml" filepath="$PROJECT_DIR$/.idea/modules/pj.inventorybinds.ru.InventoryBinds.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/pj.inventorybinds.ru.InventoryBinds.test.iml" filepath="$PROJECT_DIR$/.idea/modules/pj.inventorybinds.ru.InventoryBinds.test.iml" />
+    </modules>
+  </component>
+</project>

@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "id": "inventorybinds",
+  "version": "${version}",
+  "name": "InventoryBinds",
+  "description": "The mod allows you to add buttons with binds directly to your inventory.",
+  "authors": [
+    "_PrometheuZ_"
+  ],
+  "contact": {
+    "homepage": "https://modrinth.com/mod/inventory-binds"
+  },
+  "license": "MIT",
+  "icon": "assets/inventorybinds/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "pj.inventorybinds.ru.InventoryBinds"
+    ]
+  },
+  "mixins": [
+    "inventorybinds.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric": "*",
+    "minecraft": "${minecraft_version}"
+  }
+}

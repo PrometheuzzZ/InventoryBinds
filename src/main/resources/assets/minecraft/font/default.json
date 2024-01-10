@@ -1,0 +1,24 @@
+{
+	"providers": [
+		{
+			"type": "bitmap",
+			"file": "inventorybinds:font/cmd.png",
+			"ascent": 7,
+			"height": 8,
+			"chars": ["字"]
+		},
+		{
+			"type": "bitmap",
+			"file": "inventorybinds:font/msg.png",
+			"ascent": 7,
+			"height": 8,
+			"chars": ["体"]
+		},	{
+			"type": "bitmap",
+			"file": "inventorybinds:font/scmd.png",
+			"ascent": 7,
+			"height": 8,
+			"chars": ["異"]
+		}
+	]
+}
