@@ -98,7 +98,7 @@ public class InventoryBinds implements ModInitializer {
                     Item ItemIco = Registries.ITEM.get(Identifier.tryParse(buttonJson.getItemId()));
 
                     if(bCommands.charAt(0) == '/'){
-                        String finalCommands = bCommands.replaceAll("/", "");
+                        String finalCommands = bCommands.substring(1);
                         buttonWidget = new ButtonWidget((HandledScreen)screen, index, row, "字"+buttonJson.getName(), ItemIco, button ->  MinecraftClient.getInstance().player.networkHandler.sendChatCommand(finalCommands));
                     } else if (bCommands.charAt(0) == '!'){
                         String finalCommands = bCommands.replaceAll("!", "");
