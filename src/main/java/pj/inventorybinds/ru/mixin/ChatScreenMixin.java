@@ -17,7 +17,7 @@ public class ChatScreenMixin {
 
     @Shadow protected TextFieldWidget chatField;
 
-    @Inject(method={"init"}, at={@At(value="RETURN")}, cancellable=true)
+    @Inject(method={"init"}, at={@At(value="RETURN")})
     private void initChatScreen(CallbackInfo ci) {
         setChatField(this.chatField);
     }

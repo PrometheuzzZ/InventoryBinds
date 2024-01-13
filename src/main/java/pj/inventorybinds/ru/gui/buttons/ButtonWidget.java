@@ -24,18 +24,18 @@ import static pj.inventorybinds.ru.InventoryBinds.MOD_ID;
 @Environment(value= EnvType.CLIENT)
 public class ButtonWidget extends TexturedButtonWidget {
     private static final Identifier TEXTURE_MAIN = new Identifier(MOD_ID,"textures/gui/button_empty.png");
-    private String descript;
-    private int line;
-    private int row;
+    private final String description;
+    private final int line;
+    private final int row;
     private final HandledScreen<?> screen;
-    private Item itemIco;
+    private final Item itemIco;
 
     private PressAction onPress;
 
-    public ButtonWidget(HandledScreen<?> screen, int buttonIndex, int row, String descript, Item items, PressAction pressAction) {
+    public ButtonWidget(HandledScreen<?> screen, int buttonIndex, int row, String description, Item items, PressAction pressAction) {
         super(0, 0, 20, 20, new ButtonTextures(TEXTURE_MAIN, TEXTURE_MAIN), pressAction);
         this.line = buttonIndex;
-        this.descript = descript;
+        this.description = description;
         this.screen = screen;
         this.itemIco = items;
         this.row = row;
@@ -51,8 +51,6 @@ public class ButtonWidget extends TexturedButtonWidget {
         if (!(screen instanceof RecipeBookProvider)) {
             InventoryBinds.setRecipeBookIsOpen(false);
         }
-
-
 
         int invOffset = 1;
 
@@ -100,8 +98,8 @@ public class ButtonWidget extends TexturedButtonWidget {
 
         if (this.isMouseOver(mouseX, mouseY)) {
             int offset = 0;
-            context.drawTooltip(MinecraftClient.getInstance().textRenderer, Text.literal(this.descript),mouseX - offset, mouseY);
-            //  this.screen.(matrices, Text.literal(this.descript), mouseX - offset, mouseY);
+            context.drawTooltip(MinecraftClient.getInstance().textRenderer, Text.literal(this.description),mouseX - offset, mouseY);
+            //  this.screen.(matrices, Text.literal(this.description), mouseX - offset, mouseY);
         }
 
     }

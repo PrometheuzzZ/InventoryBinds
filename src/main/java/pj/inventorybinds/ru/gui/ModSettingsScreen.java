@@ -27,7 +27,7 @@ public class ModSettingsScreen
         WLabel screenName = new WLabel(Text.translatable("gui.inventorybinds.settings"));
         root.add(screenName, 0, 0, 7, 1);
         root.add(openConfigFolder, 0, 4, 7, 1);
-        openConfigFolder.setOnClick(() -> openConfigFolderAction());
+        openConfigFolder.setOnClick(ModSettingsScreen::openConfigFolderAction);
     }
 
     private static void openConfigFolderAction(){

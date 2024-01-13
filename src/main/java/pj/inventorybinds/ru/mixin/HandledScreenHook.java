@@ -20,7 +20,7 @@ public abstract class HandledScreenHook {
     @Shadow protected int backgroundHeight;
 
 
-    @Inject(method={"render"}, at={@At(value="HEAD")}, cancellable=true)
+    @Inject(method={"render"}, at={@At(value="HEAD")})
     private void render(DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
 
         InventoryBinds.setScreenBackgroundHeight(this.backgroundHeight);

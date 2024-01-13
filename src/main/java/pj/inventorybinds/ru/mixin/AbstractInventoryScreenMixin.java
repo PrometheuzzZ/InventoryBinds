@@ -40,9 +40,9 @@ public abstract class AbstractInventoryScreenMixin<T extends ScreenHandler> exte
     @Inject(at = { @At("HEAD") }, method = { "drawStatusEffects" }, cancellable = true)
     private void drawStatusEffects(DrawContext context, int mouseX, int mouseY, CallbackInfo ci) {
 
-
-
         RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
+        assert this.client != null;
+        assert this.client.player != null;
         Collection<StatusEffectInstance> effects = this.client.player.getStatusEffects();
         int size = effects.size();
         if (size == 0) {
@@ -84,11 +84,9 @@ public abstract class AbstractInventoryScreenMixin<T extends ScreenHandler> exte
             final List<Text> list = List.of(this.getStatusEffectDescription(hovered), StatusEffectUtil.getDurationText(hovered, 1.0f, MinecraftClient.getInstance().getTickDelta()));
             context.drawTooltip(this.textRenderer, list, Optional.empty(), mouseX, Math.max(mouseY, 16));
         }
-        if (this instanceof RecipeBookProvider) {
+        if (this instanceof RecipeBookProvider rbp) {
 
-            final RecipeBookProvider rbp = (RecipeBookProvider)this;
             final RecipeBookWidget widget = rbp.getRecipeBookWidget();
-
 
             if (widget != null && widget.isOpen()) {
                 ci.cancel();

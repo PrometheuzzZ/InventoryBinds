@@ -15,10 +15,8 @@ import pj.inventorybinds.ru.config.ButtonsConfig;
 import pj.inventorybinds.ru.config.ModConfigs;
 import pj.inventorybinds.ru.config.buttons.ButtonsList;
 import pj.inventorybinds.ru.config.buttons.ButtonJson;
-import pj.inventorybinds.ru.gui.ModSettingsScreen;
-import pj.inventorybinds.ru.gui.buttons.ButtonSettings;
+import pj.inventorybinds.ru.gui.buttons.ButtonWidgetSettings;
 import pj.inventorybinds.ru.gui.buttons.ButtonWidget;
-import pj.inventorybinds.ru.gui.screen.PJScreen;
 
 import java.nio.charset.StandardCharsets;
 
@@ -87,11 +85,6 @@ public class InventoryBinds implements ModInitializer {
                         row++;
                     }
 
-                    byte[] contents = buttonJson.getName().getBytes(StandardCharsets.UTF_8);
-                    String pubuttonname = new String(contents, StandardCharsets.UTF_16);
-
-                    System.out.println(pubuttonname);
-
                     ButtonWidget buttonWidget;
                     String bCommands = buttonJson.getCommand();
 
@@ -99,13 +92,18 @@ public class InventoryBinds implements ModInitializer {
 
                     if(bCommands.charAt(0) == '/'){
                         String finalCommands = bCommands.substring(1);
-                        buttonWidget = new ButtonWidget((HandledScreen)screen, index, row, "字"+buttonJson.getName(), ItemIco, button ->  MinecraftClient.getInstance().player.networkHandler.sendChatCommand(finalCommands));
+                        buttonWidget = new ButtonWidget((HandledScreen<?>)screen, index, row, "字"+buttonJson.getName(), ItemIco, button -> {
+                            assert MinecraftClient.getInstance().player != null;
+                            MinecraftClient.getInstance().player.networkHandler.sendChatCommand(finalCommands);
+                        });
                     } else if (bCommands.charAt(0) == '!'){
                         String finalCommands = bCommands.replaceAll("!", "");
-                        buttonWidget = new ButtonWidget((HandledScreen)screen, index, row, "異"+buttonJson.getName(), ItemIco, button ->  insertText("/"+finalCommands+" ", true));
+                        buttonWidget = new ButtonWidget((HandledScreen<?>)screen, index, row, "異"+buttonJson.getName(), ItemIco, button ->  insertText("/"+finalCommands+" ", true));
                     } else {
-                        String finalCommands = bCommands;
-                        buttonWidget = new ButtonWidget((HandledScreen)screen, index, row, "体"+buttonJson.getName(), ItemIco, button ->  MinecraftClient.getInstance().player.networkHandler.sendChatMessage(finalCommands));
+                        buttonWidget = new ButtonWidget((HandledScreen<?>)screen, index, row, "体"+buttonJson.getName(), ItemIco, button -> {
+                            assert MinecraftClient.getInstance().player != null;
+                            MinecraftClient.getInstance().player.networkHandler.sendChatMessage(bCommands);
+                        });
                     }
 
                     Screens.getButtons(screen).add(buttonWidget);
@@ -113,12 +111,12 @@ public class InventoryBinds implements ModInitializer {
                 }
 
                 if(buttonsList.getButtons().size()>=6){
-                    ButtonSettings buttonSettings= new ButtonSettings((HandledScreen)screen, 6, 0, Text.translatable("gui.inventorybinds.settings").getString(), Item.byRawId(0), button ->  MinecraftClient.getInstance().setScreen(new PJScreen(new ModSettingsScreen())));
-                    Screens.getButtons(screen).add(buttonSettings);
+                    ButtonWidgetSettings buttonWidgetSettings = new ButtonWidgetSettings((HandledScreen<?>) screen, 6, 0, Text.translatable("gui.inventorybinds.settings").getString(), Item.byRawId(0));
+                    Screens.getButtons(screen).add(buttonWidgetSettings);
 
                 } else {
-                    ButtonSettings buttonSettings= new ButtonSettings((HandledScreen)screen, buttonsList.getButtons().size()+1, 0, Text.translatable("gui.inventorybinds.settings").getString(), Item.byRawId(0), button ->  MinecraftClient.getInstance().setScreen(new PJScreen(new ModSettingsScreen())));
-                    Screens.getButtons(screen).add(buttonSettings);
+                    ButtonWidgetSettings buttonWidgetSettings = new ButtonWidgetSettings((HandledScreen<?>)screen, buttonsList.getButtons().size()+1, 0, Text.translatable("gui.inventorybinds.settings").getString(), Item.byRawId(0));
+                    Screens.getButtons(screen).add(buttonWidgetSettings);
                 }
 
             }

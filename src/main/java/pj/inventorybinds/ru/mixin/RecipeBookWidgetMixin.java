@@ -19,12 +19,8 @@ public abstract class RecipeBookWidgetMixin {
     @Shadow public abstract boolean isOpen();
 
 
-    @Inject(at = { @At("HEAD") }, method = { "render" }, cancellable = true)
+    @Inject(at = { @At("HEAD") }, method = { "render" })
     private void render(DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
-        if(isOpen()){
-            setRecipeBookIsOpen(true);
-        } else {
-            setRecipeBookIsOpen(false);
-        }
+        setRecipeBookIsOpen(isOpen());
     }
     }
