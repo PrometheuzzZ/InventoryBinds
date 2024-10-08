@@ -1,8 +1,10 @@
 package pj.inventorybinds.ru.config;
 
 import com.mojang.datafixers.util.Pair;
+import net.minecraft.client.MinecraftClient;
 
 import static pj.inventorybinds.ru.InventoryBinds.MOD_ID;
+import static pj.inventorybinds.ru.config.ButtonsConfig.loadButtonsFromConfig;
 
 
 public class ModConfigs {
@@ -16,17 +18,23 @@ public class ModConfigs {
             "    {\n" +
             "      \"name\":\"Template Command\",\n" +
             "      \"bind\":\"/spawn\",\n" +
-            "      \"item_id\":\"grass_block\"\n" +
+            "      \"item_id\":\"grass_block\",\n" +
+            "      \"server\":\"*\",\n" +
+            "      \"id\":\"0\"\n" +
             "    },\n" +
             "    {\n" +
             "      \"name\":\"Template Suggest Command\",\n" +
             "      \"bind\":\"!ban\",\n" +
-            "      \"item_id\":\"grass_block\"\n" +
+            "      \"item_id\":\"grass_block\",\n" +
+            "      \"server\":\"*\",\n" +
+            "      \"id\":\"1\"\n" +
             "    },\n" +
             "    {\n" +
             "      \"name\":\"Template Chat Message\",\n" +
             "      \"bind\":\"Hello World\",\n" +
-            "      \"item_id\":\"grass_block\"\n" +
+            "      \"item_id\":\"grass_block\",\n" +
+            "      \"server\":\"*\",\n" +
+            "      \"id\":\"2\"\n" +
             "    }\n" +
             "  ]\n" +
             "}";
@@ -40,6 +48,10 @@ public class ModConfigs {
         CONFIG = SimpleConfig.of(MOD_ID).provider(configs).request();
 
         assignConfigs();
+
+
+
+
     }
 
     private static void createConfigs() {
@@ -50,9 +62,18 @@ public class ModConfigs {
     }
 
     private static void assignConfigs() {
+
         BUTTONS = CONFIG.getOrDefault("BUTTONS", defaultButtons);
 
-
-        System.out.println("All " + configs.getConfigsList().size() + " have been set properly");
     }
+
+    public static void reloadConfig(){
+        CONFIG =  SimpleConfig.of(MOD_ID).provider(configs).request();
+
+        assignConfigs();
+
+        loadButtonsFromConfig();
+    }
+
+
 }

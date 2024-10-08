@@ -17,6 +17,13 @@ public class ButtonJson {
     @SerializedName("item_id")
     @Expose
     private String itemId;
+    @SerializedName("server")
+    @Expose
+    private String server;
+    @SerializedName("id")
+    @Expose
+    private String id;
+
 
     public String getName() {
         return name;
@@ -40,6 +47,33 @@ public class ButtonJson {
 
     public void setItemId(String itemId) {
         this.itemId = itemId;
+    }
+
+    public String getServer() {
+        return server;
+    }
+
+    public void setServer(String server) {
+        this.server = server;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public ButtonJson(String name, String command, String itemId, String server) {
+        this.name = name;
+        this.command = command;
+        this.itemId = itemId;
+        this.server = server;
+    }
+
+    public ButtonJson() {
+
     }
 
 }

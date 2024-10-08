@@ -1,106 +1,124 @@
 package pj.inventorybinds.ru.mixin;
 
-
-import com.mojang.blaze3d.systems.RenderSystem;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.screen.ingame.AbstractInventoryScreen;
-import net.minecraft.client.gui.screen.ingame.HandledScreen;
-import net.minecraft.client.gui.screen.recipebook.RecipeBookProvider;
-import net.minecraft.client.gui.screen.recipebook.RecipeBookWidget;
-import net.minecraft.client.texture.Sprite;
-import net.minecraft.entity.effect.StatusEffect;
-import net.minecraft.entity.effect.StatusEffectInstance;
-import net.minecraft.entity.effect.StatusEffectUtil;
-import net.minecraft.screen.ScreenHandler;
-import net.minecraft.text.Text;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import pj.inventorybinds.ru.InventoryBinds;
-
-
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
-@Mixin({ AbstractInventoryScreen.class })
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import com.google.common.collect.Ordering;
+
+import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.gui.screen.ingame.AbstractInventoryScreen;
+import net.minecraft.client.gui.screen.ingame.CreativeInventoryScreen;
+import net.minecraft.client.gui.screen.ingame.HandledScreen;
+import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.effect.StatusEffectUtil;
+import net.minecraft.screen.ScreenHandler;
+import net.minecraft.text.Text;
+
+@Mixin(AbstractInventoryScreen.class)
 public abstract class AbstractInventoryScreenMixin<T extends ScreenHandler> extends HandledScreen<T> {
+    @Unique
+    private static boolean hasInventoryTabs = true;
+
+    private AbstractInventoryScreenMixin() { super(null, null, null); }
 
     @Shadow
-    protected abstract Text getStatusEffectDescription(StatusEffectInstance statusEffect);
-
-    private AbstractInventoryScreenMixin() {
-        super(null, null, null);
+    private Text getStatusEffectDescription(StatusEffectInstance effect) {
+        throw new UnsupportedOperationException();
     }
 
+    @Shadow
+    private void drawStatusEffectBackgrounds(DrawContext draw, int x, int height, Iterable<StatusEffectInstance> statusEffects, boolean wide) {
+        throw new UnsupportedOperationException();
+    }
 
-    @Inject(at = { @At("HEAD") }, method = { "drawStatusEffects" }, cancellable = true)
-    private void drawStatusEffects(DrawContext context, int mouseX, int mouseY, CallbackInfo ci) {
+    @Shadow
+    private void drawStatusEffectSprites(DrawContext draw, int x, int height, Iterable<StatusEffectInstance> statusEffects, boolean wide) {
+        throw new UnsupportedOperationException();
+    }
 
-        RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
+    @Shadow
+    private void drawStatusEffectDescriptions(DrawContext draw, int x, int height, Iterable<StatusEffectInstance> statusEffects) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Inject(at = @At(value = "INVOKE",
+            target = "net/minecraft/client/gui/screen/ingame/AbstractInventoryScreen.drawStatusEffectBackgrounds(Lnet/minecraft/client/gui/DrawContext;IILjava/lang/Iterable;Z)V"),
+            method = "drawStatusEffects")
+    private void drawStatusEffects(DrawContext draw, int mouseX, int mouseY, CallbackInfo info) {
+            drawCenteredEffects(draw, mouseX, mouseY);
+    }
+
+    @ModifyVariable(at = @At(value = "INVOKE", target = "java/util/Collection.size()I", ordinal = 0),
+            method = "drawStatusEffects", ordinal = 0)
+    private Collection<StatusEffectInstance> drawStatusEffects(Collection<StatusEffectInstance> original) {
+            return List.of();
+    }
+
+    @Unique
+    private void drawCenteredEffects(DrawContext raw, int mouseX, int mouseY) {
         assert this.client != null;
         assert this.client.player != null;
-        Collection<StatusEffectInstance> effects = this.client.player.getStatusEffects();
+        Collection<StatusEffectInstance> effects = Ordering.natural().sortedCopy(this.client.player.getStatusEffects());
         int size = effects.size();
         if (size == 0) {
-            ci.cancel();
+            return;
         }
+        boolean wide = size == 1;
         int y = this.y - 34;
-
-        int xOff = 34;
-        if (size == 1) {
-            xOff = 122;
+        if (((Object) this) instanceof CreativeInventoryScreen || hasInventoryTabs) {
+            y -= 28;
+            if (false) {
+                y -= 22;
+            }
         }
-        else if (size > 5) {
+        int xOff = 34;
+        if (wide) {
+            xOff = 122;
+        } else if (size > 5) {
             xOff = (this.backgroundWidth - 32) / (size - 1);
         }
-        int width = (size - 1) * xOff + ((size == 1) ? 120 : 32);
+        int width = (size - 1) * xOff + (wide ? 120 : 32);
         int x = this.x + (this.backgroundWidth - width) / 2;
         StatusEffectInstance hovered = null;
-        for (final StatusEffectInstance inst : effects) {
-            RenderSystem.setShaderTexture(0, AbstractInventoryScreenMixin.BACKGROUND_TEXTURE);
-            StatusEffect effect = inst.getEffectType();
-            Sprite sprite = this.client.getStatusEffectSpriteManager().getSprite(effect);
-            int ew = (size == 1) ? 120 : 32;
-            context.drawTexture(BACKGROUND_TEXTURE, x, y, 0, (size == 1) ? 166 : 198, ew, 32);
-            RenderSystem.setShaderTexture(0, sprite.getAtlasId());
-            context.drawSprite( x + ((size == 1) ? 6 : 7), y + 7, 0, 18, 18, sprite);
-            if (size == 1) {
-                context.drawSprite(x + 6, y + 7, 0, 18, 18, sprite);
-                Text text = this.getStatusEffectDescription(inst);
-                context.drawTextWithShadow(this.textRenderer, text, (x + 28), (y + 6), 16777215);
-                String string = StatusEffectUtil.getDurationText(inst, 1.0f, MinecraftClient.getInstance().getTickDelta()).getString();
-                context.drawTextWithShadow(this.textRenderer, string, (x + 28), (y + 16), 8355711);
+        int restoreY = this.y;
+        try {
+            this.y = y;
+            for (StatusEffectInstance inst : effects) {
+                int ew = wide ? 120 : 32;
+                List<StatusEffectInstance> single = List.of(inst);
+                this.drawStatusEffectBackgrounds(raw, x, 32, single, wide);
+                this.drawStatusEffectSprites(raw, x, 32, single, wide);
+                if (wide) {
+                    this.drawStatusEffectDescriptions(raw, x, 32, single);
+                }
+                if (mouseX >= x && mouseX < x + ew && mouseY >= y && mouseY < y + 32) {
+                    hovered = inst;
+                }
+                x += xOff;
             }
-            if (mouseX >= x && mouseX < x + ew && mouseY >= y && mouseY < y + 32) {
-                hovered = inst;
-            }
-            x += xOff;
+        } finally {
+            this.y = restoreY;
         }
         if (hovered != null && size > 1) {
-            final List<Text> list = List.of(this.getStatusEffectDescription(hovered), StatusEffectUtil.getDurationText(hovered, 1.0f, MinecraftClient.getInstance().getTickDelta()));
-            context.drawTooltip(this.textRenderer, list, Optional.empty(), mouseX, Math.max(mouseY, 16));
+            List<Text> list = List.of(this.getStatusEffectDescription(hovered), StatusEffectUtil.getDurationText(hovered, 1.0f, client.world.getTickManager().getTickRate()));
+            raw.drawTooltip(client.textRenderer, list, Optional.empty(), mouseX, Math.max(mouseY, 16));
         }
-        if (this instanceof RecipeBookProvider rbp) {
-
-            final RecipeBookWidget widget = rbp.getRecipeBookWidget();
-
-            if (widget != null && widget.isOpen()) {
-                ci.cancel();
-            }
-        } else {
-
-            InventoryBinds.setRecipeBookIsOpen(false);
-        }
-
-
-        ci.cancel();
-
-
     }
 
 
+
+    @ModifyVariable(at = @At(value = "STORE", ordinal = 0),
+            method = "drawStatusEffects", ordinal = 2)
+          private int changeEffectSpace(int original) {
+        return this.x;
+    }
 }

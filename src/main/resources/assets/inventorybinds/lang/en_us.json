@@ -1,4 +1,11 @@
 {
-  "gui.inventorybinds.settings": "Settings",
-  "gui.inventorybinds.config_open_button": "Open config folder"
+  "gui.inventorybinds.new_bind": "New bind",
+  "gui.inventorybinds.edit_bind": "Edit bind",
+  "gui.inventorybinds.bind_name": "Name:",
+  "gui.inventorybinds.bind_cmd": "Command:",
+  "gui.inventorybinds.item_id": "Item ID:",
+  "gui.inventorybinds.server_only": "Only this server",
+  "gui.inventorybinds.save": "Save",
+  "gui.inventorybinds.delete": "Delete",
+  "gui.inventorybinds.cancel": "Cancel"
 }

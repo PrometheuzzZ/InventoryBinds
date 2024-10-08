@@ -11,42 +11,71 @@ import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.gui.screen.ingame.MerchantScreen;
 import net.minecraft.client.gui.screen.recipebook.RecipeBookProvider;
 import net.minecraft.client.gui.widget.TexturedButtonWidget;
+import net.minecraft.client.option.KeyBinding;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import pj.inventorybinds.ru.InventoryBinds;
+import pj.inventorybinds.ru.config.ButtonsConfig;
+import pj.inventorybinds.ru.config.buttons.ButtonJson;
+import pj.inventorybinds.ru.gui.ModCreateBindScreen;
+import pj.inventorybinds.ru.gui.ModEditBindScreen;
+import pj.inventorybinds.ru.gui.screen.PJScreen;
 
 import static pj.inventorybinds.ru.InventoryBinds.MOD_ID;
 
 
 @Environment(value= EnvType.CLIENT)
 public class ButtonWidget extends TexturedButtonWidget {
-    private static final Identifier TEXTURE_MAIN = new Identifier(MOD_ID,"textures/gui/button_empty.png");
+    private static final Identifier TEXTURE_MAIN = Identifier.of(MOD_ID,"textures/gui/button_empty.png");
+    private static final Identifier TEXTURE_SETTINGS = Identifier.of(MOD_ID,"textures/gui/button_settings.png");
     private final String description;
     private final int line;
     private final int row;
     private final HandledScreen<?> screen;
     private final Item itemIco;
+    private final int buttonId;
+    private final boolean setting;
 
     private PressAction onPress;
 
-    public ButtonWidget(HandledScreen<?> screen, int buttonIndex, int row, String description, Item items, PressAction pressAction) {
+    public ButtonWidget(HandledScreen<?> screen, int buttonIndex, int row, String description, Item items, PressAction pressAction, int buttonId) {
         super(0, 0, 20, 20, new ButtonTextures(TEXTURE_MAIN, TEXTURE_MAIN), pressAction);
         this.line = buttonIndex;
         this.description = description;
         this.screen = screen;
         this.itemIco = items;
         this.row = row;
+        this.buttonId = buttonId;
+        this.setting = false;
         this.setX(getX());
         this.setY(getY());
+
+
+
+    }
+
+    public ButtonWidget(HandledScreen<?> screen, int buttonIndex, int row, String description, Item items, PressAction pressAction, boolean settings, int buttonId) {
+        super(0, 0, 20, 20, new ButtonTextures(TEXTURE_SETTINGS, TEXTURE_SETTINGS), pressAction);
+        this.line = buttonIndex;
+        this.description = description;
+        this.screen = screen;
+        this.itemIco = items;
+        this.row = row;
+        this.buttonId = buttonId;
+        this.setting = settings;
+        this.setX(getX());
+        this.setY(getY());
+
 
     }
 
 
-
     public int getX() {
+
+        PressAction pressAction = button -> {};
 
         if (!(screen instanceof RecipeBookProvider)) {
             InventoryBinds.setRecipeBookIsOpen(false);
@@ -99,9 +128,45 @@ public class ButtonWidget extends TexturedButtonWidget {
         if (this.isMouseOver(mouseX, mouseY)) {
             int offset = 0;
             context.drawTooltip(MinecraftClient.getInstance().textRenderer, Text.literal(this.description),mouseX - offset, mouseY);
+
             //  this.screen.(matrices, Text.literal(this.description), mouseX - offset, mouseY);
         }
 
+    }
+
+    @Override
+    public boolean mouseClicked(double mouseX, double mouseY, int button) {
+        if (this.active && this.visible) {
+            if (this.isValidClickButton(button)) {
+                boolean bl = this.clicked(mouseX, mouseY);
+                if (bl) {
+                    this.playDownSound(MinecraftClient.getInstance().getSoundManager());
+                    this.onClick(mouseX, mouseY);
+                    return true;
+                }
+            } else {
+                boolean bl = this.clicked(mouseX, mouseY);
+                if (bl) {
+
+                    if(button==1){
+                        if(!setting){
+
+                            ButtonJson buttonJson =  ButtonsConfig.getButtonsList().getButtons().get(this.buttonId);
+
+                            MinecraftClient.getInstance().setScreen(new PJScreen(new ModEditBindScreen(buttonJson)));
+
+                        }
+
+                    }
+
+
+                }
+            }
+
+            return false;
+        } else {
+            return false;
+        }
     }
 
 
@@ -119,8 +184,11 @@ public class ButtonWidget extends TexturedButtonWidget {
         }
         RenderSystem.enableDepthTest();
 
-        this.drawTexture(context, TEXTURE_MAIN, this.getX(), this.getY(), 0, 0, offset, this.width, this.height, 20, 40);
-
+        if(!setting) {
+            this.drawTexture(context, TEXTURE_MAIN, this.getX(), this.getY(), 0, 0, offset, this.width, this.height, 20, 40);
+        } else {
+            this.drawTexture(context, TEXTURE_SETTINGS, this.getX(), this.getY(), 0, 0, offset, this.width, this.height, 20, 40);
+        }
 
         if (this.itemIco == Items.ENDER_CHEST) {
             context.drawItem(new ItemStack(this.itemIco), this.getX() + 2, this.getY() + 2);
