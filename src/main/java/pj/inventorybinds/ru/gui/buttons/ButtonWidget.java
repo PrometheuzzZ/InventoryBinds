@@ -1,17 +1,19 @@
 package pj.inventorybinds.ru.gui.buttons;
 
 
+import com.mojang.authlib.GameProfile;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.gui.PlayerSkinDrawer;
 import net.minecraft.client.gui.screen.ButtonTextures;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.gui.screen.ingame.MerchantScreen;
 import net.minecraft.client.gui.screen.recipebook.RecipeBookProvider;
 import net.minecraft.client.gui.widget.TexturedButtonWidget;
-import net.minecraft.client.option.KeyBinding;
+import net.minecraft.client.network.PlayerListEntry;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -20,9 +22,15 @@ import net.minecraft.util.Identifier;
 import pj.inventorybinds.ru.InventoryBinds;
 import pj.inventorybinds.ru.config.ButtonsConfig;
 import pj.inventorybinds.ru.config.buttons.ButtonJson;
-import pj.inventorybinds.ru.gui.ModCreateBindScreen;
 import pj.inventorybinds.ru.gui.ModEditBindScreen;
 import pj.inventorybinds.ru.gui.screen.PJScreen;
+import pj.inventorybinds.ru.utils.GetSkinFromMojang;
+import pj.inventorybinds.ru.utils.ImageUtils;
+
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.util.Optional;
+import java.util.UUID;
 
 import static pj.inventorybinds.ru.InventoryBinds.MOD_ID;
 
@@ -38,6 +46,8 @@ public class ButtonWidget extends TexturedButtonWidget {
     private final Item itemIco;
     private final int buttonId;
     private final boolean setting;
+
+
 
     private PressAction onPress;
 
@@ -94,9 +104,11 @@ public class ButtonWidget extends TexturedButtonWidget {
             x += 77;
         }
 
-        if (this.row == 1) {
-            x += 22;
+        if (this.row > 0) {
+            x += (22*this.row);
         }
+
+
         return x;
     }
 
@@ -190,11 +202,23 @@ public class ButtonWidget extends TexturedButtonWidget {
             this.drawTexture(context, TEXTURE_SETTINGS, this.getX(), this.getY(), 0, 0, offset, this.width, this.height, 20, 40);
         }
 
+
         if (this.itemIco == Items.ENDER_CHEST) {
             context.drawItem(new ItemStack(this.itemIco), this.getX() + 2, this.getY() + 2);
             context.drawItem(new ItemStack(this.itemIco), this.getX() + 2, this.getY() + 2);
         } else if (this.itemIco == Items.CHEST) {
             context.drawItem(new ItemStack(this.itemIco), this.getX() + 2, this.getY() + 2);
+     //   } else if (this.itemIco == Items.TRAPPED_CHEST) {
+
+
+     //      UUID uuid = UUID.fromString("069a79f4-44e9-4726-a5be-fca90e38aaf5");
+
+       //     PlayerListEntry playerListEntry = new PlayerListEntry(new GameProfile(uuid, "Notch"), true);
+
+         //  PlayerSkinDrawer.draw(context, playerListEntry.getSkinTextures().texture(), this.getX() + 2, this.getY() + 2, 16, true, true);
+
+
+
         } else {
             context.drawItem(new ItemStack(this.itemIco), this.getX() + 2, this.getY() + 2);
         }

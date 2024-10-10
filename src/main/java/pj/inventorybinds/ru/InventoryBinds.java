@@ -82,11 +82,12 @@ public class InventoryBinds implements ModInitializer {
 
                if(!firstRun){
 
-
                    ModConfigs.reloadConfig();
 
                } else {
+
                    firstRun = false;
+
                }
 
                 ButtonsList buttonsList = ButtonsConfig.getButtonsList();
@@ -95,17 +96,8 @@ public class InventoryBinds implements ModInitializer {
                 int row = 0;
 
                 for (ButtonJson buttonJson : buttonsList.getButtons()){
-                    if(index==6){
-                        index = 0;
-                        row++;
-                    }
 
-                    if(index==12){
-                        index = 0;
-                        row++;
-                    }
-
-                    if(index==18){
+                    if (index % 6 == 0 && index != 0) {
                         index = 0;
                         row++;
                     }

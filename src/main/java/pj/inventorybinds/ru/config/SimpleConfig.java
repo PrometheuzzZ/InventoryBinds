@@ -18,7 +18,7 @@ import static pj.inventorybinds.ru.InventoryBinds.MOD_ID;
 
 public class SimpleConfig {
 
-    private static final Logger LOGGER = LogManager.getLogger("SimpleConfig");
+    public static final Logger LOGGER = LogManager.getLogger("INVENTORY_BINDS");
     private final HashMap<String, String> config = new HashMap<>();
     private final ConfigRequest request;
     private boolean broken = false;
@@ -108,8 +108,6 @@ public class SimpleConfig {
             allConfig += line;
         }
 
-
-        System.out.println(allConfig);
         config.put( "BUTTONS", allConfig );
     }
 
