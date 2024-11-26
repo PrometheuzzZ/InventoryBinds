@@ -105,7 +105,7 @@ public class InventoryBinds implements ModInitializer {
                     ButtonWidget buttonWidget;
                     String bCommands = buttonJson.getCommand();
 
-                    Item ItemIco = Registries.ITEM.get(Identifier.tryParse(buttonJson.getItemId()));
+                    String ItemIco = buttonJson.getItemId();
 
                     if(bCommands.charAt(0) == '/'){
                         String finalCommands = bCommands.substring(1);
@@ -141,14 +141,17 @@ public class InventoryBinds implements ModInitializer {
                     }
                 }
 
+
+                if(ButtonsConfig.getButtonsList().getNewBindButtonEnabled()){
                 if(buttonsList.getButtons().size()>=6){
-                    ButtonWidgetSettings buttonWidgetSettings = new ButtonWidgetSettings((HandledScreen<?>) screen, 6, 0, Text.translatable("gui.inventorybinds.new_bind").getString(), Item.byRawId(0));
+                    ButtonWidgetSettings buttonWidgetSettings = new ButtonWidgetSettings((HandledScreen<?>) screen, 6, 0, Text.translatable("gui.inventorybinds.new_bind").getString(), "AIR");
                     Screens.getButtons(screen).add(buttonWidgetSettings);
 
                 } else {
-                    ButtonWidgetSettings buttonWidgetSettings = new ButtonWidgetSettings((HandledScreen<?>)screen, index, 0, Text.translatable("gui.inventorybinds.new_bind").getString(), Item.byRawId(0));
+                    ButtonWidgetSettings buttonWidgetSettings = new ButtonWidgetSettings((HandledScreen<?>)screen, index, 0, Text.translatable("gui.inventorybinds.new_bind").getString(), "AIR");
                     Screens.getButtons(screen).add(buttonWidgetSettings);
 
+                }
                 }
 
             }

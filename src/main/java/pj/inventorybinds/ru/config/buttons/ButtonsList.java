@@ -13,6 +13,22 @@ public class ButtonsList {
     @Expose
     private List<ButtonJson> buttons;
 
+    @SerializedName("bind_editor_enabled")
+    @Expose
+    private boolean bindEditorEnabled;
+
+    @SerializedName("new_bind_button_enabled")
+    @Expose
+    private boolean newBindButtonEnabled;
+
+    public boolean getBindEditorEnabled() {
+        return bindEditorEnabled;
+    }
+
+    public boolean getNewBindButtonEnabled() {
+        return newBindButtonEnabled;
+    }
+
     public List<ButtonJson> getButtons() {
         return buttons;
     }

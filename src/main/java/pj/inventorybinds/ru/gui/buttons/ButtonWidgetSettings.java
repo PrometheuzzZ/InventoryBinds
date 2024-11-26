@@ -7,7 +7,7 @@ import pj.inventorybinds.ru.gui.ModCreateBindScreen;
 import pj.inventorybinds.ru.gui.screen.PJScreen;
 
 public class ButtonWidgetSettings extends ButtonWidget{
-    public ButtonWidgetSettings(HandledScreen<?> screen, int buttonIndex, int row, String description, Item items) {
+    public ButtonWidgetSettings(HandledScreen<?> screen, int buttonIndex, int row, String description, String items) {
         super(screen, buttonIndex, row, description, items, button ->  MinecraftClient.getInstance().setScreen(new PJScreen(new ModCreateBindScreen())), true, -1);
     }
 

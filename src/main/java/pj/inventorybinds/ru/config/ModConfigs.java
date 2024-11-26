@@ -14,6 +14,8 @@ public class ModConfigs {
     public static String BUTTONS;
 
     public static String defaultButtons = "{\n" +
+            "\"bind_editor_enabled\":\"true\",\n"+
+            "\"new_bind_button_enabled\":\"true\",\n"+
             "  \"buttons\":[\n" +
             "    {\n" +
             "      \"name\":\"Template Command\",\n" +
