@@ -1,60 +1,50 @@
 package pj.inventorybinds.ru.gui.buttons;
-
 import net.minecraft.util.Identifier;
+import java.util.HashMap;
 
-import java.util.ArrayList;
-import java.util.logging.Logger;
+import static pj.inventorybinds.ru.InventoryBinds.MOD_ID;
 
 public class DynamicTextureManager {
 
-    private static ArrayList<DynamicTextureObject> dynamicTextureObjectArrayList = new ArrayList<>();
+    private static HashMap<String, Identifier> stringIdentifierHashMap = new HashMap<>();
 
-    private static class DynamicTextureObject{
 
-        private String hash;
-        private Identifier identifier;
 
-        DynamicTextureObject(String hash, Identifier identifier){
-            this.hash = hash;
-            this.identifier = identifier;
-        }
+    public static void addDynamicTexture(String hash, Identifier identifier) {
 
-        public Identifier getIdentifier() {
-            return identifier;
-        }
-
-        public String getHash() {
-            return hash;
+        if (!checkHash(hash)) {
+            stringIdentifierHashMap.put(hash, identifier);
         }
 
     }
 
-    public static void addDynamicTexture(String hash, Identifier identifier){
+    public static void updateDynamicTexture(String hash, Identifier identifier) {
 
-        if(!checkHash(hash)) {
-            dynamicTextureObjectArrayList.add(new DynamicTextureObject(hash, identifier));
+        if (checkHash(hash)) {
+
+            stringIdentifierHashMap.replace(hash, identifier);
+
+        } else {
+
+            addDynamicTexture(hash, identifier);
+
         }
 
     }
 
-    public static boolean checkHash(String hash){
-        for(DynamicTextureObject dynamicTextureObject : dynamicTextureObjectArrayList){
-            if(dynamicTextureObject.getHash().contains(hash)){
-                return true;
-            }
-        }
-
-        return false;
+    public static boolean checkHash(String hash) {
+        return stringIdentifierHashMap.containsKey(hash);
     }
 
-    public static Identifier getTextureByHash(String hash){
-        for(DynamicTextureObject dynamicTextureObject : dynamicTextureObjectArrayList){
-            if(dynamicTextureObject.getHash().contains(hash)){
-                return dynamicTextureObject.getIdentifier();
-            }
+    public static Identifier getTextureByHash(String hash) {
+
+        if (checkHash(hash)) {
+            return stringIdentifierHashMap.get(hash);
+        } else {
+            return Identifier.of(MOD_ID, "textures/gui/missing_item.png");
         }
 
-        return null;
+
     }
 
 

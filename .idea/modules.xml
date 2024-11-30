@@ -4,6 +4,8 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/AdvancedChat.InventoryBinds.main.iml" filepath="$PROJECT_DIR$/.idea/modules/AdvancedChat.InventoryBinds.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/AdvancedChat.InventoryBinds.test.iml" filepath="$PROJECT_DIR$/.idea/modules/AdvancedChat.InventoryBinds.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/IdeaProjects.InventoryBinds.main.iml" filepath="$PROJECT_DIR$/.idea/modules/IdeaProjects.InventoryBinds.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/IdeaProjects.InventoryBinds.test.iml" filepath="$PROJECT_DIR$/.idea/modules/IdeaProjects.InventoryBinds.test.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/InventoryBinds.main.iml" filepath="$PROJECT_DIR$/.idea/modules/InventoryBinds.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/InventoryBinds.test.iml" filepath="$PROJECT_DIR$/.idea/modules/InventoryBinds.test.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/pj.inventorybinds.ru.InventoryBinds.main.iml" filepath="$PROJECT_DIR$/.idea/modules/pj.inventorybinds.ru.InventoryBinds.main.iml" />

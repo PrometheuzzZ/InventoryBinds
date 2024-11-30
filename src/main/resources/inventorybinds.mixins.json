@@ -6,10 +6,9 @@
   "mixins": [
   ],
   "client": [
-    "AbstractInventoryScreenMixin",
     "ChatScreenMixin",
     "HandledScreenHook",
-    "PlayerSkinTextureAccessor",
+    "StatusEffectsDisplayMixin",
     "RecipeBookWidgetMixin"
   ],
   "injectors": {

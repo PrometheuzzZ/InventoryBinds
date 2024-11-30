@@ -4,7 +4,11 @@ import com.google.gson.JsonIOException;
 import net.minecraft.client.texture.NativeImage;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.DefaultHttpRequestRetryHandler;
+import org.apache.http.impl.client.HttpClients;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -18,35 +22,12 @@ import static pj.inventorybinds.ru.config.SimpleConfig.LOGGER;
 
 public class ImageUtils {
 
-    public static BufferedImage getBufferedImgFromNativeImg(NativeImage nativeImage) {
-        int width = nativeImage.getWidth();
-        int height = nativeImage.getHeight();
-        BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-
-        for (int y = 0; y < height; y++) {
-            for (int x = 0; x < width; x++) {
-                int color = nativeImage.getColor(x, y);//ABGR
-
-                bufferedImage.setRGB(x, y, ((color >> 16) & 0xFF) | ((color & 0xFF) << 16) | (color & 0xFF00FF00));//ARGB
-            }
-        }
-
-        return bufferedImage;
-    }
 
 
-    public static Optional<BufferedImage> getPlayerSkin(String name, GetSkinDecorator getSkinDecorator) throws NullPointerException, JsonIOException, IOException {
-        Optional<BufferedImage> skin = getSkinDecorator.getSkin(name);
 
-        if (skin.isEmpty()) {
-            LOGGER.warn("[ImageUtils] skin of '{}' was not found", name);
-        }
-
-        return skin;
-    }
 
     public static Optional<BufferedImage> getImageFromUrl(String urlLocation) throws IOException {
-        try (var httpClient = FzmmUtils.getHttpClient()) {
+        try (var httpClient = getHttpClient()) {
             HttpGet httpGet = new HttpGet(urlLocation);
 
             HttpResponse response = httpClient.execute(httpGet);
@@ -62,24 +43,16 @@ public class ImageUtils {
     }
 
     public static NativeImage toNativeImage(BufferedImage image) {
-
-        // """NativeImage.Format.RGBA""" = ABGR
+        
         NativeImage nativeImage = new NativeImage(NativeImage.Format.RGBA, image.getWidth(), image.getHeight(), false);
         ColorModel colorModel = image.getColorModel();
         for (int y = 0; y < image.getHeight(); y++) {
             for (int x = 0; x < image.getWidth(); x++) {
 
-                // avoid using image.getRGB(x, y) because it will result in packing
-                // in ARGB format, and then it would have to unpack it to repack
-                // it in ABGR format. By avoiding this, it can directly pack in ABGR format
                 Object elements = image.getRaster().getDataElements(x, y, null);
 
-                int abgr = (colorModel.getAlpha(elements) << 24) |
-                        (colorModel.getBlue(elements) << 16) |
-                        (colorModel.getGreen(elements) << 8) |
-                        colorModel.getRed(elements);
 
-                nativeImage.setColor(x, y, abgr);
+                nativeImage.setColorArgb(x, y, colorModel.getRGB(elements));
             }
         }
         return nativeImage;
@@ -109,6 +82,18 @@ public class ImageUtils {
         return true;
     }
 
+    public static CloseableHttpClient getHttpClient() {
+        RequestConfig requestConfig = RequestConfig.custom()
+                .setConnectTimeout(3000)
+                .setSocketTimeout(3000)
+                .build();
 
+        return HttpClients.custom()
+                .setRetryHandler(new DefaultHttpRequestRetryHandler(0, false))
+                .disableAutomaticRetries()
+                .setDefaultRequestConfig(requestConfig)
+                .setUserAgent("INVBIND/1.0")
+                .build();
+    }
 
 }

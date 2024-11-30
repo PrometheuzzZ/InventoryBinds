@@ -12,6 +12,7 @@ import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.gui.screen.ingame.MerchantScreen;
 import net.minecraft.client.gui.screen.recipebook.RecipeBookProvider;
 import net.minecraft.client.gui.widget.TexturedButtonWidget;
+import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.texture.NativeImageBackedTexture;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registries;
@@ -28,6 +29,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
 
@@ -43,7 +45,7 @@ public class ButtonWidget extends TexturedButtonWidget {
 
     private static final Identifier TEXTURE_MAIN = Identifier.of(MOD_ID, "textures/gui/button_empty.png");
     private static final Identifier TEXTURE_SETTINGS = Identifier.of(MOD_ID, "textures/gui/button_settings.png");
-    private final String description;
+    private final List<Text> description;
     private final int line;
     private final int row;
     private final HandledScreen<?> screen;
@@ -54,7 +56,7 @@ public class ButtonWidget extends TexturedButtonWidget {
 
     private PressAction onPress;
 
-    public ButtonWidget(HandledScreen<?> screen, int buttonIndex, int row, String description, String itemID, PressAction pressAction, int buttonId) {
+    public ButtonWidget(HandledScreen<?> screen, int buttonIndex, int row, List<Text> description, String itemID, PressAction pressAction, int buttonId) {
         super(0, 0, 20, 20, new ButtonTextures(TEXTURE_MAIN, TEXTURE_MAIN), pressAction);
         this.line = buttonIndex;
         this.description = description;
@@ -69,7 +71,7 @@ public class ButtonWidget extends TexturedButtonWidget {
 
     }
 
-    public ButtonWidget(HandledScreen<?> screen, int buttonIndex, int row, String description, String itemID, PressAction pressAction, boolean settings, int buttonId) {
+    public ButtonWidget(HandledScreen<?> screen, int buttonIndex, int row, List<Text> description, String itemID, PressAction pressAction, boolean settings, int buttonId) {
         super(0, 0, 20, 20, new ButtonTextures(TEXTURE_SETTINGS, TEXTURE_SETTINGS), pressAction);
         this.line = buttonIndex;
         this.description = description;
@@ -133,6 +135,7 @@ public class ButtonWidget extends TexturedButtonWidget {
         int invOffset = this.line * 22;
         int y = (MinecraftClient.getInstance().getWindow().getScaledHeight() - getBackgroundHeight()) / 2;
         return y + invOffset;
+
     }
 
 
@@ -145,7 +148,7 @@ public class ButtonWidget extends TexturedButtonWidget {
 
         if (this.isMouseOver(mouseX, mouseY)) {
             int offset = 0;
-            context.drawTooltip(MinecraftClient.getInstance().textRenderer, Text.literal(this.description), mouseX - offset, mouseY);
+            context.drawTooltip(MinecraftClient.getInstance().textRenderer, this.description, mouseX - offset, mouseY);
 
             //  this.screen.(matrices, Text.literal(this.description), mouseX - offset, mouseY);
         }
@@ -213,16 +216,20 @@ public class ButtonWidget extends TexturedButtonWidget {
         }
 
         if (itemID.contains("https")) {
-            try {
 
-                String hash = Base64.getEncoder().encodeToString(itemID.getBytes()).toLowerCase().replaceAll("=","");
+            String url = this.itemID;
 
-                Identifier urlTextureID;
+            String hash = Base64.getEncoder().encodeToString(url.getBytes()).toLowerCase().replaceAll("=","");
 
-                if(!DynamicTextureManager.checkHash(hash)){
+            Identifier urlTextureID;
 
+            if(!DynamicTextureManager.checkHash(hash)) {
 
-                    Optional<BufferedImage> bufferedImage = ImageUtils.getImageFromUrl(itemID);
+                DynamicTextureManager.addDynamicTexture(hash, Identifier.of(MOD_ID, "textures/gui/missing_item.png"));
+
+                try {
+
+                    Optional<BufferedImage> bufferedImage = ImageUtils.getImageFromUrl(url);
 
                     bufferedImage.ifPresent(image -> {
 
@@ -230,35 +237,24 @@ public class ButtonWidget extends TexturedButtonWidget {
 
                         Identifier loadedUrlTextureID = MinecraftClient.getInstance().getTextureManager().registerDynamicTexture(hash, nativeImageBackedTexture);
 
-                        DynamicTextureManager.addDynamicTexture(hash, loadedUrlTextureID);
+                        DynamicTextureManager.updateDynamicTexture(hash, loadedUrlTextureID);
 
                     });
 
-                    if(DynamicTextureManager.checkHash(hash)){
-                        urlTextureID = DynamicTextureManager.getTextureByHash(hash);
-                    } else {
-                        urlTextureID = new Identifier(MOD_ID, "textures/gui/missing_item.png");
-                        DynamicTextureManager.addDynamicTexture(hash, urlTextureID);
-                    }
+                } catch (Exception e) {
 
-
-
-                } else {
-
-
-                    urlTextureID = DynamicTextureManager.getTextureByHash(hash);
+                    Logger.getLogger("InventoryBinds").warning("Error loading texture from url: " + url);
 
                 }
 
 
 
-
-
-                this.drawTexture(context, urlTextureID, this.getX()+2, this.getY()+2, 0, 0, 0, 16, 16, 16, 16);
-
-            } catch (IOException e) {
-                e.printStackTrace();
             }
+
+            urlTextureID = DynamicTextureManager.getTextureByHash(hash);
+
+            this.drawTexture(context, urlTextureID, this.getX()+2, this.getY()+2, 0, 0, 0, 16, 16, 16, 16);
+
         } else {
 
             if(getItemStack(this.itemID).getItem() != null) {
@@ -267,7 +263,7 @@ public class ButtonWidget extends TexturedButtonWidget {
 
             }else {
 
-                this.drawTexture(context, new Identifier(MOD_ID, "textures/gui/missing_item.png"), this.getX()+2, this.getY()+2, 0, 0, 0, 16, 16, 16, 16);
+                this.drawTexture(context, Identifier.of(MOD_ID, "textures/gui/missing_item.png"), this.getX()+2, this.getY()+2, 0, 0, 0, 16, 16, 16, 16);
 
             }
         }
@@ -283,7 +279,8 @@ public class ButtonWidget extends TexturedButtonWidget {
         }
 
         RenderSystem.enableDepthTest();
-        context.drawTexture(texture, x, y, (float) u, (float) i, width, height, textureWidth, textureHeight);
+        context.drawTexture(RenderLayer::getGuiTextured, texture, x, y, (float) u, (float) i, width, height, textureWidth, textureHeight);
+
     }
 
 
