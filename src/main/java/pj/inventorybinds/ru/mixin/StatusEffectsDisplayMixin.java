@@ -122,7 +122,7 @@ public abstract class StatusEffectsDisplayMixin {
 
     @Unique
     private int getXoffset(){
-        return (InventoryBinds.getButtonsRow()+1)*20+((InventoryBinds.getButtonsRow()-1)*2)+2;
+        return (InventoryBinds.getButtonsRow()+1)*20+((InventoryBinds.getButtonsRow()-1)*2)+4;
     }
 
     private Text getStatusEffectDescription(StatusEffectInstance statusEffect) {
