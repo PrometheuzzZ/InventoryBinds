@@ -42,7 +42,7 @@ public class ModCreateBindScreen extends LightweightGuiDescription {
         WLabel bindIconText = new WLabel(Text.translatable("gui.inventorybinds.item_id"));
         root.add(bindIconText, 0, 7, 7, 1);
         bindIcon = new WTextField();
-        bindIcon.setMaxLength(50);
+        bindIcon.setMaxLength(200);
         root.add(bindIcon, 0, 8, 10, 1);
 
         serverBind = new WToggleButton(Text.translatable("gui.inventorybinds.server_only"));

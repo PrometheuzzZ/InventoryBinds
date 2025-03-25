@@ -13,7 +13,6 @@ import net.minecraft.client.gui.screen.ingame.MerchantScreen;
 import net.minecraft.client.gui.screen.recipebook.RecipeBookProvider;
 import net.minecraft.client.gui.widget.TexturedButtonWidget;
 import net.minecraft.client.render.RenderLayer;
-import net.minecraft.client.texture.NativeImageBackedTexture;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registries;
 import net.minecraft.text.Text;
@@ -23,24 +22,16 @@ import pj.inventorybinds.ru.config.ButtonsConfig;
 import pj.inventorybinds.ru.config.buttons.ButtonJson;
 import pj.inventorybinds.ru.gui.ModEditBindScreen;
 import pj.inventorybinds.ru.gui.screen.PJScreen;
-import pj.inventorybinds.ru.utils.ImageUtils;
 
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.List;
-import java.util.Optional;
-import java.util.logging.Logger;
+import java.util.*;
+
 
 import static pj.inventorybinds.ru.InventoryBinds.MOD_ID;
+import static pj.inventorybinds.ru.gui.buttons.DynamicTextureManager.loadDynamicTextures;
 
 
 @Environment(value = EnvType.CLIENT)
-public class ButtonWidget extends TexturedButtonWidget {
-
-    private static ArrayList<DynamicTextureManager> dynamicTextures = new ArrayList<>();
-
+public class PJButtonWidget extends TexturedButtonWidget {
 
 
     private static final Identifier TEXTURE_MAIN = Identifier.of(MOD_ID, "textures/gui/button_empty.png");
@@ -54,9 +45,7 @@ public class ButtonWidget extends TexturedButtonWidget {
     private final boolean setting;
 
 
-    private PressAction onPress;
-
-    public ButtonWidget(HandledScreen<?> screen, int buttonIndex, int row, List<Text> description, String itemID, PressAction pressAction, int buttonId) {
+    public PJButtonWidget(HandledScreen<?> screen, int buttonIndex, int row, List<Text> description, String itemID, PressAction pressAction, int buttonId) {
         super(0, 0, 20, 20, new ButtonTextures(TEXTURE_MAIN, TEXTURE_MAIN), pressAction);
         this.line = buttonIndex;
         this.description = description;
@@ -71,7 +60,7 @@ public class ButtonWidget extends TexturedButtonWidget {
 
     }
 
-    public ButtonWidget(HandledScreen<?> screen, int buttonIndex, int row, List<Text> description, String itemID, PressAction pressAction, boolean settings, int buttonId) {
+    public PJButtonWidget(HandledScreen<?> screen, int buttonIndex, int row, List<Text> description, String itemID, PressAction pressAction, boolean settings, int buttonId) {
         super(0, 0, 20, 20, new ButtonTextures(TEXTURE_SETTINGS, TEXTURE_SETTINGS), pressAction);
         this.line = buttonIndex;
         this.description = description;
@@ -82,15 +71,10 @@ public class ButtonWidget extends TexturedButtonWidget {
         this.setting = settings;
         this.setX(getX());
         this.setY(getY());
-
-
     }
 
 
     public int getX() {
-
-        PressAction pressAction = button -> {
-        };
 
         if (!(screen instanceof RecipeBookProvider)) {
             InventoryBinds.setRecipeBookIsOpen(false);
@@ -125,7 +109,6 @@ public class ButtonWidget extends TexturedButtonWidget {
         return 176;
     }
 
-
     private int getBackgroundHeight() {
         return InventoryBinds.getScreenBackgroundHeight();
     }
@@ -148,49 +131,48 @@ public class ButtonWidget extends TexturedButtonWidget {
 
         if (this.isMouseOver(mouseX, mouseY)) {
             int offset = 0;
-            context.drawTooltip(MinecraftClient.getInstance().textRenderer, this.description, mouseX - offset, mouseY);
 
-            //  this.screen.(matrices, Text.literal(this.description), mouseX - offset, mouseY);
+            context.drawTooltip(MinecraftClient.getInstance().textRenderer, this.description, mouseX - offset, mouseY);
         }
 
     }
 
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
-        if (this.active && this.visible) {
-            if (this.isValidClickButton(button)) {
-                boolean bl = this.clicked(mouseX, mouseY);
-                if (bl) {
-                    this.playDownSound(MinecraftClient.getInstance().getSoundManager());
-                    this.onClick(mouseX, mouseY);
-                    return true;
-                }
-            } else {
-                boolean bl = this.clicked(mouseX, mouseY);
-                if (bl) {
+        System.out.println("mouseClicked called with button: " + button);
+        try {
+            if (this.active && this.visible) {
+                if (this.isValidClickButton(button)) {
+                    boolean bl = this.isMouseOver(mouseX, mouseY);
+                    if (bl) {
+                        this.playDownSound(MinecraftClient.getInstance().getSoundManager());
+                        this.onClick(mouseX, mouseY);
 
-                    if (button == 1) {
-                        if (!setting) {
-
-                            if (ButtonsConfig.getButtonsList().getBindEditorEnabled()) {
-
-                                ButtonJson buttonJson = ButtonsConfig.getButtonsList().getButtons().get(this.buttonId);
-
-                                MinecraftClient.getInstance().setScreen(new PJScreen(new ModEditBindScreen(buttonJson)));
-
-                            }
-
-                        }
-
+                        return true;
                     }
+                } else {
+                    boolean bl = this.isMouseOver(mouseX, mouseY);
+                    if (bl) {
+                        if (button == 1) {
+                            if (!setting) {
+                                if (ButtonsConfig.getButtonsList().getBindEditorEnabled()) {
+                                    ButtonJson buttonJson = ButtonsConfig.getButtonsList().getButtons().get(this.buttonId);
 
-
+                                    MinecraftClient.getInstance().setScreen(new PJScreen(new ModEditBindScreen(buttonJson)));
+                                }
+                            }
+                        }
+                    }
                 }
+                return false;
+            } else {
+                return false;
             }
-
+        } catch (Exception e) {
+            e.printStackTrace(); // Выводим стек вызовов для диагностики
             return false;
-        } else {
-            return false;
+        } finally {
+            System.out.println("mouseClicked finished");
         }
     }
 
@@ -215,58 +197,37 @@ public class ButtonWidget extends TexturedButtonWidget {
             this.drawTexture(context, TEXTURE_SETTINGS, this.getX(), this.getY(), 0, 0, offset, this.width, this.height, 20, 40);
         }
 
-        if (itemID.contains("https")) {
+
+        if (this.itemID.contains("https")) {
 
             String url = this.itemID;
 
-            String hash = Base64.getEncoder().encodeToString(url.getBytes()).toLowerCase().replaceAll("=","");
 
-            Identifier urlTextureID;
+            boolean loaded = DynamicTextureManager.checkTextureByURL(url);
 
-            if(!DynamicTextureManager.checkHash(hash)) {
+            Identifier icon;
 
-                DynamicTextureManager.addDynamicTexture(hash, Identifier.of(MOD_ID, "textures/gui/missing_item.png"));
+            if (loaded) {
 
-                try {
+                icon = DynamicTextureManager.getTextureByUrl(url);
+                this.drawTexture(context, icon, this.getX() + 2, this.getY() + 2, 0, 0, 0, 16, 16, 16, 16);
 
-                    Optional<BufferedImage> bufferedImage = ImageUtils.getImageFromUrl(url);
-
-                    bufferedImage.ifPresent(image -> {
-
-                        NativeImageBackedTexture nativeImageBackedTexture = new NativeImageBackedTexture(ImageUtils.toNativeImage(image));
-
-                        Identifier loadedUrlTextureID = MinecraftClient.getInstance().getTextureManager().registerDynamicTexture(hash, nativeImageBackedTexture);
-
-                        DynamicTextureManager.updateDynamicTexture(hash, loadedUrlTextureID);
-
-                    });
-
-                } catch (Exception e) {
-
-                    Logger.getLogger("InventoryBinds").warning("Error loading texture from url: " + url);
-
-                }
-
-
-
+            } else {
+                loadDynamicTextures(url);
             }
 
-            urlTextureID = DynamicTextureManager.getTextureByHash(hash);
 
-            this.drawTexture(context, urlTextureID, this.getX()+2, this.getY()+2, 0, 0, 0, 16, 16, 16, 16);
+        } else if (getItemStack(this.itemID).getItem() != null) {
+
+            context.drawItem(getItemStack(this.itemID), this.getX() + 2, this.getY() + 2);
 
         } else {
 
-            if(getItemStack(this.itemID).getItem() != null) {
+            this.drawTexture(context, Identifier.of(MOD_ID, "textures/gui/missing_item.png"), this.getX() + 2, this.getY() + 2, 0, 0, 0, 16, 16, 16, 16);
 
-                context.drawItem(getItemStack(this.itemID), this.getX() + 2, this.getY() + 2);
 
-            }else {
-
-                this.drawTexture(context, Identifier.of(MOD_ID, "textures/gui/missing_item.png"), this.getX()+2, this.getY()+2, 0, 0, 0, 16, 16, 16, 16);
-
-            }
         }
+
 
     }
 
@@ -288,7 +249,6 @@ public class ButtonWidget extends TexturedButtonWidget {
         ItemStack itemStack = new ItemStack(Registries.ITEM.get(Identifier.tryParse(itemID)));
         return itemStack;
     }
-
 
 
 
