@@ -8,8 +8,8 @@
   "client": [
     "ChatScreenMixin",
     "HandledScreenHook",
-    "StatusEffectsDisplayMixin",
-    "RecipeBookWidgetMixin"
+    "RecipeBookWidgetMixin",
+    "StatusEffectsDisplayMixin"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -12,6 +12,7 @@ import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.gui.screen.ingame.MerchantScreen;
 import net.minecraft.client.gui.screen.recipebook.RecipeBookProvider;
 import net.minecraft.client.gui.widget.TexturedButtonWidget;
+import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registries;
@@ -27,6 +28,8 @@ import java.util.*;
 
 
 import static pj.inventorybinds.ru.InventoryBinds.MOD_ID;
+import static pj.inventorybinds.ru.InventoryBinds.isShiftDown;
+import static pj.inventorybinds.ru.config.ButtonsConfig.swapButtonById;
 import static pj.inventorybinds.ru.gui.buttons.DynamicTextureManager.loadDynamicTextures;
 
 
@@ -132,30 +135,46 @@ public class PJButtonWidget extends TexturedButtonWidget {
         if (this.isMouseOver(mouseX, mouseY)) {
             int offset = 0;
 
-            context.drawTooltip(MinecraftClient.getInstance().textRenderer, this.description, mouseX - offset, mouseY);
+            if (!setting) {
+                if (isShiftDown) {
+                    context.drawTooltip(MinecraftClient.getInstance().textRenderer, Text.translatable("gui.inventorybinds.swap"), mouseX - offset, mouseY);
+                } else {
+                    context.drawTooltip(MinecraftClient.getInstance().textRenderer, this.description, mouseX - offset, mouseY);
+                }
+            } else {
+                context.drawTooltip(MinecraftClient.getInstance().textRenderer, this.description, mouseX - offset, mouseY);
+            }
         }
 
     }
 
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
-        System.out.println("mouseClicked called with button: " + button);
         try {
             if (this.active && this.visible) {
                 if (this.isValidClickButton(button)) {
                     boolean bl = this.isMouseOver(mouseX, mouseY);
                     if (bl) {
-                        this.playDownSound(MinecraftClient.getInstance().getSoundManager());
-                        this.onClick(mouseX, mouseY);
 
-                        return true;
+                        if (isShiftDown) {
+                            swapButtonById(this.buttonId, this.buttonId - 1, mouseX, mouseY);
+                        } else {
+                            this.playDownSound(MinecraftClient.getInstance().getSoundManager());
+                            this.onClick(mouseX, mouseY);
+
+                            return true;
+                        }
+
                     }
                 } else {
                     boolean bl = this.isMouseOver(mouseX, mouseY);
                     if (bl) {
                         if (button == 1) {
+
                             if (!setting) {
-                                if (ButtonsConfig.getButtonsList().getBindEditorEnabled()) {
+                                if (isShiftDown) {
+                                    swapButtonById(this.buttonId, this.buttonId + 1, mouseX, mouseY);
+                                } else if (ButtonsConfig.getButtonsList().getBindEditorEnabled()) {
                                     ButtonJson buttonJson = ButtonsConfig.getButtonsList().getButtons().get(this.buttonId);
 
                                     MinecraftClient.getInstance().setScreen(new PJScreen(new ModEditBindScreen(buttonJson)));
@@ -169,10 +188,8 @@ public class PJButtonWidget extends TexturedButtonWidget {
                 return false;
             }
         } catch (Exception e) {
-            e.printStackTrace(); // Выводим стек вызовов для диагностики
+            e.printStackTrace();
             return false;
-        } finally {
-            System.out.println("mouseClicked finished");
         }
     }
 
@@ -197,25 +214,29 @@ public class PJButtonWidget extends TexturedButtonWidget {
             this.drawTexture(context, TEXTURE_SETTINGS, this.getX(), this.getY(), 0, 0, offset, this.width, this.height, 20, 40);
         }
 
-
         if (this.itemID.contains("https")) {
 
-            String url = this.itemID;
-
-
-            boolean loaded = DynamicTextureManager.checkTextureByURL(url);
-
-            Identifier icon;
-
-            if (loaded) {
-
-                icon = DynamicTextureManager.getTextureByUrl(url);
-                this.drawTexture(context, icon, this.getX() + 2, this.getY() + 2, 0, 0, 0, 16, 16, 16, 16);
+            if(itemID.contains(".webp")){
+                this.drawTexture(context, Identifier.of(MOD_ID, "textures/gui/missing_item.png"), this.getX() + 2, this.getY() + 2, 0, 0, 0, 16, 16, 16, 16);
 
             } else {
-                loadDynamicTextures(url);
-            }
 
+                String url = this.itemID;
+
+
+                boolean loaded = DynamicTextureManager.checkTextureByURL(url);
+
+                Identifier icon;
+
+                if (loaded) {
+
+                    icon = DynamicTextureManager.getTextureByUrl(url);
+                    this.drawTexture(context, icon, this.getX() + 2, this.getY() + 2, 0, 0, 0, 16, 16, 16, 16);
+
+                } else {
+                    loadDynamicTextures(url);
+                }
+            }
 
         } else if (getItemStack(this.itemID).getItem() != null) {
 
@@ -224,8 +245,6 @@ public class PJButtonWidget extends TexturedButtonWidget {
         } else {
 
             this.drawTexture(context, Identifier.of(MOD_ID, "textures/gui/missing_item.png"), this.getX() + 2, this.getY() + 2, 0, 0, 0, 16, 16, 16, 16);
-
-
         }
 
 
@@ -249,7 +268,6 @@ public class PJButtonWidget extends TexturedButtonWidget {
         ItemStack itemStack = new ItemStack(Registries.ITEM.get(Identifier.tryParse(itemID)));
         return itemStack;
     }
-
 
 
 }

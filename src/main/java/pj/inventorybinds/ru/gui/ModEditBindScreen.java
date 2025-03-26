@@ -6,6 +6,7 @@ import io.github.cottonmc.cotton.gui.widget.data.HorizontalAlignment;
 import io.github.cottonmc.cotton.gui.widget.data.Insets;
 import net.fabricmc.fabric.api.util.TriState;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.screen.ingame.InventoryScreen;
 import net.minecraft.text.Text;
 import pj.inventorybinds.ru.config.ButtonsConfig;
 import pj.inventorybinds.ru.config.buttons.ButtonJson;
@@ -19,6 +20,7 @@ public class ModEditBindScreen extends LightweightGuiDescription {
     static WTextField bindCommand;
     static WTextField bindIcon;
     static WToggleButton serverBind;
+    static WToggleButton hidden;
     static ButtonJson buttonJson;
 
     public ModEditBindScreen(ButtonJson buttonJsonB) {
@@ -51,20 +53,20 @@ public class ModEditBindScreen extends LightweightGuiDescription {
         bindIcon.setText(buttonJson.getItemId());
         root.add(bindIcon, 0, 8, 10, 1);
 
-
+        hidden = new WToggleButton(Text.translatable("gui.inventorybinds.hidden"));
+        hidden.setToggle(buttonJson.getHide());
+        root.add(hidden, 0, 10, 7, 1);
 
         serverBind = new WToggleButton(Text.translatable("gui.inventorybinds.server_only"));
         serverBind.setToggle(!buttonJson.getServer().equalsIgnoreCase("*"));
-        root.add(serverBind, 0, 10, 7, 1);
-
-
+        root.add(serverBind, 0, 12, 7, 1);
 
         WButton save = new WButton(Text.translatable("gui.inventorybinds.save"));
-        root.add(save, 0, 12, 5, 1);
+        root.add(save, 0, 14, 5, 1);
         save.setOnClick(ModEditBindScreen::saveBind);
         WButton delete = new WButton(Text.translatable("gui.inventorybinds.delete"));
         delete.setOnClick(ModEditBindScreen::deleteBind);
-        root.add(delete, 6, 12, 5, 1);
+        root.add(delete, 6, 14, 5, 1);
 
 
 
@@ -106,15 +108,16 @@ public class ModEditBindScreen extends LightweightGuiDescription {
             bindServerStr = server;
         }
 
+        Boolean bindHidden = hidden.getToggle();
 
-        editButtonById(Integer.parseInt(buttonJson.getId()), new ButtonJson(bindNameStr,bindCommandStr,bindIconStr,bindServerStr));
+        editButtonById(Integer.parseInt(buttonJson.getId()), new ButtonJson(bindNameStr,bindCommandStr,bindIconStr,bindServerStr, bindHidden));
 
         exit();
 
     }
 
     private static void exit() {
-        MinecraftClient.getInstance().player.closeScreen();
+        MinecraftClient.getInstance().setScreen(new InventoryScreen(MinecraftClient.getInstance().player));
     }
 
 

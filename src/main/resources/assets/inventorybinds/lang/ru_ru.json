@@ -1,11 +1,13 @@
 {
   "gui.inventorybinds.new_bind": "Новый бинд",
-  "gui.inventorybinds.edit_bind": "Редактирование бинд",
+  "gui.inventorybinds.edit_bind": "Редактирование бинда",
   "gui.inventorybinds.bind_name": "Название:",
   "gui.inventorybinds.bind_cmd": "Комманда:",
   "gui.inventorybinds.item_id": "ID Предмета:",
   "gui.inventorybinds.server_only": "Только для этого сервера",
   "gui.inventorybinds.save": "Сохранить",
   "gui.inventorybinds.delete": "Удалить",
-  "gui.inventorybinds.cancel": "Отмена"
+  "gui.inventorybinds.cancel": "Отмена",
+  "gui.inventorybinds.hidden": "Скрыть команду",
+  "gui.inventorybinds.swap": "ЛКМ+Alt - переместить вверх, ПКМ+Alt - переместить вниз"
 }

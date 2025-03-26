@@ -23,10 +23,31 @@ public class ButtonJson {
     @SerializedName("id")
     @Expose
     private String id;
+    @SerializedName("hide")
+    @Expose
+    private Boolean hide;
 
 
     public String getName() {
         return name;
+    }
+
+    public Boolean getHide() {
+
+        if(hide==null){
+            return false;
+        }
+
+        try {
+            return hide;
+        } catch (Exception e){
+            return false;
+        }
+
+    }
+
+    public void setHide(Boolean hide) {
+        this.hide = hide;
     }
 
     public void setName(String name) {
@@ -70,6 +91,14 @@ public class ButtonJson {
         this.command = command;
         this.itemId = itemId;
         this.server = server;
+    }
+
+    public ButtonJson(String name, String command, String itemId, String server, Boolean hide) {
+        this.name = name;
+        this.command = command;
+        this.itemId = itemId;
+        this.server = server;
+        this.hide = hide;
     }
 
     public ButtonJson() {

@@ -2,20 +2,15 @@ package pj.inventorybinds.ru.config;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
 import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.screen.ingame.InventoryScreen;
 import pj.inventorybinds.ru.config.buttons.ButtonJson;
 import pj.inventorybinds.ru.config.buttons.ButtonsList;
 
-import java.awt.*;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.logging.Logger;
-
-import static net.fabricmc.fabric.impl.resource.loader.ModResourcePackUtil.GSON;
 
 
 public class ButtonsConfig {
@@ -36,7 +31,7 @@ public class ButtonsConfig {
         return buttonsList;
     }
 
-    public static void addButtonToButtonsList(String name, String bind, String itemId, String server){
+    public static void addButtonToButtonsList(String name, String bind, String itemId, String server, Boolean hide){
 
         String configPath = FabricLoader.getInstance().getConfigDir().toString();
 
@@ -49,6 +44,7 @@ public class ButtonsConfig {
         newButton.setCommand(bind);
         newButton.setItemId(itemId);
         newButton.setServer(server);
+        newButton.setHide(hide);
         config.getButtons().add(newButton);
 
         assignButtonIds(config);
@@ -101,6 +97,39 @@ public class ButtonsConfig {
         saveConfig(fullConfigPath, config);
     }
 
+    public static void swapButtonById(int old_id, int new_id, double mouseX, double mouseY) {
+
+
+        String configPath = FabricLoader.getInstance().getConfigDir().toString();
+
+        String fullConfigPath = configPath+"\\inventorybinds\\inventorybinds.json";
+
+        ButtonsList config = loadConfig(fullConfigPath);
+
+        if(new_id+1 > config.getButtons().size()){
+            return;
+        }
+
+        if(new_id < 0){
+            return;
+        }
+
+        ButtonJson oldButton = config.getButtons().get(old_id);
+
+        ButtonJson newButton = config.getButtons().get(new_id);
+
+        editButtonById(new_id, oldButton);
+
+        editButtonById(old_id, newButton);
+
+        //MinecraftClient.getInstance().player.closeScreen();
+
+        MinecraftClient.getInstance().setScreen(new InventoryScreen(MinecraftClient.getInstance().player));
+
+
+
+    }
+
     public static void editButtonById(int id, ButtonJson buttonJson) {
 
         String configPath = FabricLoader.getInstance().getConfigDir().toString();
@@ -113,6 +142,7 @@ public class ButtonsConfig {
         config.getButtons().get(id).setCommand(buttonJson.getCommand());
         config.getButtons().get(id).setServer(buttonJson.getServer());
         config.getButtons().get(id).setItemId(buttonJson.getItemId());
+        config.getButtons().get(id).setHide(buttonJson.getHide());
 
         assignButtonIds(config);
 

@@ -7,5 +7,7 @@
   "gui.inventorybinds.server_only": "Only this server",
   "gui.inventorybinds.save": "Save",
   "gui.inventorybinds.delete": "Delete",
-  "gui.inventorybinds.cancel": "Cancel"
+  "gui.inventorybinds.cancel": "Cancel",
+  "gui.inventorybinds.hidden": "Hide command",
+  "gui.inventorybinds.swap": "LMB+Alt - move up, RMB+Alt - move down"
 }

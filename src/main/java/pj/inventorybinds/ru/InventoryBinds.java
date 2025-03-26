@@ -1,6 +1,7 @@
 package pj.inventorybinds.ru;
 
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
 import net.fabricmc.fabric.api.client.screen.v1.Screens;
 import net.minecraft.client.MinecraftClient;
@@ -8,6 +9,7 @@ import net.minecraft.client.gui.screen.ChatScreen;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.text.Text;
+import org.lwjgl.glfw.GLFW;
 import pj.inventorybinds.ru.config.ButtonsConfig;
 import pj.inventorybinds.ru.config.ModConfigs;
 import pj.inventorybinds.ru.config.buttons.ButtonsList;
@@ -20,6 +22,7 @@ import java.util.List;
 
 public class InventoryBinds implements ModInitializer {
 
+    public static boolean isShiftDown = false;
 
     public static boolean firstRun = true;
 
@@ -126,27 +129,31 @@ public class InventoryBinds implements ModInitializer {
 
                     PJButtonWidget buttonWidget;
 
-                    boolean hide = buttonJson.getCommand().contains("hide");
+                    Boolean hide = false;
+
+                    try {
+                        if(buttonJson.getHide()!=null) {
+                            hide = buttonJson.getHide();
+                        } else{
+                            hide = false;
+                        }
+                    } catch (Exception e) {
+                        hide = false;
+                    }
+
 
                     String bCommands = buttonJson.getCommand();
 
-                    if(hide){
-                        bCommands = bCommands.replaceAll("hide", "");
-                    }
-
-                    String finalCommandsChat = bCommands;
-
                     String ItemIco = buttonJson.getItemId();
 
-                    if(bCommands.charAt(0) == '/'){
 
+                    if(bCommands.charAt(0) == '/'){
 
                         List<Text> desctiptionList = new ArrayList<>();
 
                         desctiptionList.add(Text.literal(buttonJson.getName()));
 
                         String finalCommands = bCommands.substring(1);
-
 
 
                         if(!hide) {
@@ -188,7 +195,7 @@ public class InventoryBinds implements ModInitializer {
 
                         buttonWidget = new PJButtonWidget((HandledScreen<?>)screen, index, row, desctiptionList, ItemIco, button -> {
                             assert MinecraftClient.getInstance().player != null;
-                            MinecraftClient.getInstance().player.networkHandler.sendChatMessage(finalCommandsChat);
+                            MinecraftClient.getInstance().player.networkHandler.sendChatMessage(bCommands);
                         }, Integer.parseInt(buttonJson.getId()));
                     }
 
@@ -241,8 +248,18 @@ public class InventoryBinds implements ModInitializer {
 
         });
 
+        ClientTickEvents.END_CLIENT_TICK.register(client -> {
+            boolean currentShiftState = GLFW.glfwGetKey(MinecraftClient.getInstance().getWindow().getHandle(), GLFW.GLFW_KEY_LEFT_ALT) == GLFW.GLFW_PRESS ||
+                    GLFW.glfwGetKey(MinecraftClient.getInstance().getWindow().getHandle(), GLFW.GLFW_KEY_RIGHT_ALT) == GLFW.GLFW_PRESS;
+
+            if (currentShiftState != isShiftDown) {
+                isShiftDown = currentShiftState;
+            }
+        });
 
     }
+
+
 
 
 

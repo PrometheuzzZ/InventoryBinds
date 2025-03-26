@@ -1,24 +1,74 @@
-[04:45:21] [main/INFO] (FabricLoader/GameProvider) Loading Minecraft 1.20.3 with Fabric Loader 0.14.22
-[04:45:21] [main/DEBUG] (FabricLoader/GamePatch) Found game constructor: net.minecraft.client.main.Main -> net.minecraft.client.MinecraftClient
-[04:45:21] [main/DEBUG] (FabricLoader/GamePatch) Patching game constructor <init>(Lnet/minecraft/client/RunArgs;)V
-[04:45:21] [main/DEBUG] (FabricLoader/GamePatch) Run directory field is thought to be net/minecraft/client/MinecraftClient/runDirectory
-[04:45:21] [main/DEBUG] (FabricLoader/GamePatch) Applying brand name hook to net/minecraft/client/ClientBrandRetriever::getClientModName
-[04:45:21] [main/DEBUG] (FabricLoader/GamePatch) Applying brand name hook to net/minecraft/server/MinecraftServer::getServerModName
-[04:45:21] [main/DEBUG] (FabricLoader/GamePatch) Patched 3 classs
-[04:45:21] [main/DEBUG] (FabricLoader/Discovery) Mod discovery time: 85,0 ms
-[04:45:21] [main/WARN] (FabricLoader/Resolution) Mod resolution failed
-[04:45:21] [main/INFO] (FabricLoader/Resolution) Immediate reason: [HARD_DEP_NO_CANDIDATE fabric-api 0.91.1+1.20.3 {depends fabricloader @ [>=0.14.23]}, ROOT_FORCELOAD_SINGLE fabric-api 0.91.1+1.20.3]
-[04:45:21] [main/INFO] (FabricLoader/Resolution) Reason: [HARD_DEP fabric-api 0.91.1+1.20.3 {depends fabricloader @ [>=0.14.23]}]
-[04:45:21] [main/INFO] (FabricLoader/Resolution) Fix: add [], remove [], replace [[fabricloader 0.14.22] -> add:fabricloader 0.14.23 ([[0.14.23,?)])]
-[04:45:21] [main/ERROR] (FabricLoader) Incompatible mod set!
-net.fabricmc.loader.impl.FormattedException: Mod resolution encountered an incompatible mod set!
-A potential solution has been determined:
-	 - Replace mod 'Fabric Loader' (fabricloader) 0.14.22 with version 0.14.23 or later.
-Unmet dependency listing:
-	 - Mod 'Fabric API' (fabric-api) 0.91.1+1.20.3 requires version 0.14.23 or later of mod 'Fabric Loader' (fabricloader), but only the wrong version is present: 0.14.22!
-	at net.fabricmc.loader.impl.FormattedException.ofLocalized(FormattedException.java:51) ~[fabric-loader-0.14.22.jar:?]
-	at net.fabricmc.loader.impl.FabricLoaderImpl.load(FabricLoaderImpl.java:192) ~[fabric-loader-0.14.22.jar:?]
-	at net.fabricmc.loader.impl.launch.knot.Knot.init(Knot.java:148) ~[fabric-loader-0.14.22.jar:?]
-	at net.fabricmc.loader.impl.launch.knot.Knot.launch(Knot.java:68) ~[fabric-loader-0.14.22.jar:?]
-	at net.fabricmc.loader.impl.launch.knot.KnotClient.main(KnotClient.java:23) ~[fabric-loader-0.14.22.jar:?]
-	at net.fabricmc.devlaunchinjector.Main.main(Main.java:86) ~[?:?]
+[11:09:28] [main/INFO] (FabricLoader/GameProvider) Loading Minecraft 1.21.4 with Fabric Loader 0.16.7
+[11:09:28] [main/DEBUG] (FabricLoader/GamePatch) Found game constructor: net.minecraft.client.main.Main -> net.minecraft.client.MinecraftClient
+[11:09:28] [main/DEBUG] (FabricLoader/GamePatch) Patching game constructor <init>(Lnet/minecraft/client/RunArgs;)V
+[11:09:28] [main/DEBUG] (FabricLoader/GamePatch) Run directory field is thought to be net/minecraft/client/MinecraftClient/runDirectory
+[11:09:28] [main/DEBUG] (FabricLoader/GamePatch) Applying brand name hook to net/minecraft/client/ClientBrandRetriever::getClientModName
+[11:09:28] [main/DEBUG] (FabricLoader/GamePatch) Applying brand name hook to net/minecraft/server/MinecraftServer::getServerModName
+[11:09:28] [main/DEBUG] (FabricLoader/Mappings) Loading mappings took 86 ms
+[11:09:28] [main/DEBUG] (FabricLoader/GamePatch) Patched 3 classs
+[11:09:28] [main/DEBUG] (FabricLoader/Discovery) Mod discovery time: 25,3 ms
+[11:09:28] [main/WARN] (FabricLoader/Resolution) Mod resolution failed
+[11:09:28] [main/INFO] (FabricLoader/Resolution) Immediate reason: [HARD_DEP_NO_CANDIDATE fabric-api 0.115.1+1.21.4 {depends fabricloader @ [>=0.16.9]}, ROOT_FORCELOAD_SINGLE fabric-api 0.115.1+1.21.4]
+[11:09:28] [main/INFO] (FabricLoader/Resolution) Reason: [HARD_DEP fabric-api 0.115.1+1.21.4 {depends fabricloader @ [>=0.16.9]}, HARD_DEP fabric-api-base 0.4.54+b47eab6b04 {depends fabricloader @ [>=0.16.9]}, HARD_DEP fabric-api-lookup-api-v1 1.6.86+b1caf1e904 {depends fabricloader @ [>=0.16.9]}, HARD_DEP fabric-lifecycle-events-v1 2.5.4+bf2a60eb04 {depends fabricloader @ [>=0.16.9]}, HARD_DEP fabric-biome-api-v1 15.0.6+b1c29d8e04 {depends fabricloader @ [>=0.16.9]}, HARD_DEP fabric-block-api-v1 1.0.31+7feeb73304 {depends fabricloader @ [>=0.16.9]}, HARD_DEP fabric-block-view-api-v2 1.0.19+7feeb73304 {depends fabricloader @ [>=0.16.9]}, HARD_DEP fabric-blockrenderlayer-v1 2.0.8+7feeb73304 {depends fabricloader @ [>=0.16.9]}, HARD_DEP fabric-client-gametest-api-v1 4.0.0+2d7e411e04 {depends fabricloader @ [>=0.16.9]}, HARD_DEP fabric-resource-loader-v0 3.0.14+e359e31604 {depends fabricloader @ [>=0.16.9]}, HARD_DEP fabric-client-tags-api-v1 1.1.29+20ea1e2304 {depends fabricloader @ [>=0.16.9]}, HARD_DEP fabric-command-api-v1 1.2.62+f71b366f04 {depends fabricloader @ [>=0.16.9]}, HARD_DEP fabric-command-api-v2 2.2.41+e496eb1504 {depends fabricloader @ [>=0.16.9]}, HARD_DEP fabric-commands-v0 0.2.79+df3654b304 {depends fabricloader @ [>=0.16.9]}, HARD_DEP fabric-content-registries-v0 9.1.17+7feeb73304 {depends fabricloader @ [>=0.16.9]}, HARD_DEP fabric-convention-tags-v1 2.1.15+7f945d5b04 {depends fabricloader @ [>=0.16.9]}, HARD_DEP fabric-convention-tags-v2 2.12.1+e359e31604 {depends fabricloader @ [>=0.16.9]}, HARD_DEP fabric-crash-report-info-v1 0.3.6+7feeb73304 {depends fabricloader @ [>=0.16.9]}, HARD_DEP fabric-data-attachment-api-v1 1.5.2+2d7e411e04 {depends fabricloader @ [>=0.16.9]}, HARD_DEP fabric-entity-events-v1 2.0.13+1934821104 {depends fabricloader @ [>=0.16.9]}, HARD_DEP fabric-object-builder-api-v1 18.0.11+7d48d43904 {depends fabricloader @ [>=0.16.9]}, HARD_DEP fabric-networking-api-v1 4.3.10+8998135104 {depends fabricloader @ [>=0.16.9]}, HARD_DEP fabric-data-generation-api-v1 22.2.9+20ea1e2304 {depends fabricloader @ [>=0.16.9]}, HARD_DEP fabric-tag-api-v1 1.0.5+7d48d43904 {depends fabricloader @ [>=0.16.9]}, HARD_DEP fabric-dimensions-v1 4.0.10+7feeb73304 {depends fabricloader @ [>=0.16.9]}, HARD_DEP fabric-events-interaction-v0 4.0.3+a4eebcf004 {depends fabricloader @ [>=0.16.9]}, HARD_DEP fabric-game-rule-api-v1 1.0.63+7d48d43904 {depends fabricloader @ [>=0.16.9]}, HARD_DEP fabric-gametest-api-v1 2.0.24+7feeb73304 {depends fabricloader @ [>=0.16.9]}, HARD_DEP fabric-item-api-v1 11.1.17+203e6b2304 {depends fabricloader @ [>=0.16.9]}, HARD_DEP fabric-item-group-api-v1 4.1.26+9a56a7cd04 {depends fabricloader @ [>=0.16.9]}, HARD_DEP fabric-key-binding-api-v1 1.0.57+7d48d43904 {depends fabricloader @ [>=0.16.9]}, HARD_DEP fabric-keybindings-v0 0.2.55+df3654b304 {depends fabricloader @ [>=0.16.9]}, HARD_DEP fabric-loot-api-v2 3.0.36+3f89f5a504 {depends fabricloader @ [>=0.16.9]}, HARD_DEP fabric-loot-api-v3 1.0.24+203e6b2304 {depends fabricloader @ [>=0.16.9]}, HARD_DEP fabric-message-api-v1 6.0.25+7feeb73304 {depends fabricloader @ [>=0.16.9]}, HARD_DEP fabric-model-loading-api-v1 4.2.1+8041d50704 {depends fabricloader @ [>=0.16.9]}, HARD_DEP fabric-particles-v1 4.0.14+7feeb73304 {depends fabricloader @ [>=0.16.9]}, HARD_DEP fabric-recipe-api-v1 8.0.9+160b66fa04 {depends fabricloader @ [>=0.16.9]}, HARD_DEP fabric-registry-sync-v0 6.1.7+e359e31604 {depends fabricloader @ [>=0.16.9]}, HARD_DEP fabric-renderer-api-v1 5.0.3+50f0feb204 {depends fabricloader @ [>=0.16.9]}, HARD_DEP fabric-renderer-indigo 2.0.3+50f0feb204 {depends fabricloader @ [>=0.16.9]}, HARD_DEP fabric-rendering-data-attachment-v1 0.3.57+73761d2e04 {depends fabricloader @ [>=0.16.9]}, HARD_DEP fabric-rendering-fluids-v1 3.1.19+7feeb73304 {depends fabricloader @ [>=0.16.9]}, HARD_DEP fabric-rendering-v1 10.1.2+b874120c04 {depends fabricloader @ [>=0.16.9]}, HARD_DEP fabric-resource-conditions-api-v1 5.0.13+203e6b2304 {depends fabricloader @ [>=0.16.9]}, HARD_DEP fabric-screen-api-v1 2.0.38+7feeb73304 {depends fabricloader @ [>=0.16.9]}, HARD_DEP fabric-screen-handler-api-v1 1.3.114+7feeb73304 {depends fabricloader @ [>=0.16.9]}, HARD_DEP fabric-sound-api-v1 1.0.32+7feeb73304 {depends fabricloader @ [>=0.16.9]}, HARD_DEP fabric-transfer-api-v1 5.4.9+efa825c904 {depends fabricloader @ [>=0.16.9]}, HARD_DEP fabric-transitive-access-wideners-v1 6.3.2+56e78b9b04 {depends fabricloader @ [>=0.16.9]}]
+[11:09:28] [main/INFO] (FabricLoader/Resolution) Fix: add [], remove [], replace [[fabricloader 0.16.7] -> add:fabricloader 0.16.9 ([[0.16.9,∞)])]
+[11:09:28] [main/ERROR] (FabricLoader) Incompatible mods found!
+net.fabricmc.loader.impl.FormattedException: Some of your mods are incompatible with the game or each other!
+A potential solution has been determined, this may resolve your problem:
+	 - Replace mod 'Fabric Loader' (fabricloader) 0.16.7 with version 0.16.9 or later.
+More details:
+	 - Mod 'Fabric API' (fabric-api) 0.115.1+1.21.4 requires version 0.16.9 or later of mod 'Fabric Loader' (fabricloader), but only the wrong version is present: 0.16.7!
+	 - Mod 'Fabric API Base' (fabric-api-base) 0.4.54+b47eab6b04 requires version 0.16.9 or later of mod 'Fabric Loader' (fabricloader), but only the wrong version is present: 0.16.7!
+	 - Mod 'Fabric API Lookup API (v1)' (fabric-api-lookup-api-v1) 1.6.86+b1caf1e904 requires version 0.16.9 or later of mod 'Fabric Loader' (fabricloader), but only the wrong version is present: 0.16.7!
+	 - Mod 'Fabric Lifecycle Events (v1)' (fabric-lifecycle-events-v1) 2.5.4+bf2a60eb04 requires version 0.16.9 or later of mod 'Fabric Loader' (fabricloader), but only the wrong version is present: 0.16.7!
+	 - Mod 'Fabric Biome API (v1)' (fabric-biome-api-v1) 15.0.6+b1c29d8e04 requires version 0.16.9 or later of mod 'Fabric Loader' (fabricloader), but only the wrong version is present: 0.16.7!
+	 - Mod 'Fabric Block API (v1)' (fabric-block-api-v1) 1.0.31+7feeb73304 requires version 0.16.9 or later of mod 'Fabric Loader' (fabricloader), but only the wrong version is present: 0.16.7!
+	 - Mod 'Fabric BlockView API (v2)' (fabric-block-view-api-v2) 1.0.19+7feeb73304 requires version 0.16.9 or later of mod 'Fabric Loader' (fabricloader), but only the wrong version is present: 0.16.7!
+	 - Mod 'Fabric BlockRenderLayer Registration (v1)' (fabric-blockrenderlayer-v1) 2.0.8+7feeb73304 requires version 0.16.9 or later of mod 'Fabric Loader' (fabricloader), but only the wrong version is present: 0.16.7!
+	 - Mod 'Fabric Client Game Test API (v1)' (fabric-client-gametest-api-v1) 4.0.0+2d7e411e04 requires version 0.16.9 or later of mod 'Fabric Loader' (fabricloader), but only the wrong version is present: 0.16.7!
+	 - Mod 'Fabric Resource Loader (v0)' (fabric-resource-loader-v0) 3.0.14+e359e31604 requires version 0.16.9 or later of mod 'Fabric Loader' (fabricloader), but only the wrong version is present: 0.16.7!
+	 - Mod 'Fabric Client Tags' (fabric-client-tags-api-v1) 1.1.29+20ea1e2304 requires version 0.16.9 or later of mod 'Fabric Loader' (fabricloader), but only the wrong version is present: 0.16.7!
+	 - Mod 'Fabric Command API (v1)' (fabric-command-api-v1) 1.2.62+f71b366f04 requires version 0.16.9 or later of mod 'Fabric Loader' (fabricloader), but only the wrong version is present: 0.16.7!
+	 - Mod 'Fabric Command API (v2)' (fabric-command-api-v2) 2.2.41+e496eb1504 requires version 0.16.9 or later of mod 'Fabric Loader' (fabricloader), but only the wrong version is present: 0.16.7!
+	 - Mod 'Fabric Commands (v0)' (fabric-commands-v0) 0.2.79+df3654b304 requires version 0.16.9 or later of mod 'Fabric Loader' (fabricloader), but only the wrong version is present: 0.16.7!
+	 - Mod 'Fabric Content Registries (v0)' (fabric-content-registries-v0) 9.1.17+7feeb73304 requires version 0.16.9 or later of mod 'Fabric Loader' (fabricloader), but only the wrong version is present: 0.16.7!
+	 - Mod 'Fabric Convention Tags' (fabric-convention-tags-v1) 2.1.15+7f945d5b04 requires version 0.16.9 or later of mod 'Fabric Loader' (fabricloader), but only the wrong version is present: 0.16.7!
+	 - Mod 'Fabric Convention Tags (v2)' (fabric-convention-tags-v2) 2.12.1+e359e31604 requires version 0.16.9 or later of mod 'Fabric Loader' (fabricloader), but only the wrong version is present: 0.16.7!
+	 - Mod 'Fabric Crash Report Info (v1)' (fabric-crash-report-info-v1) 0.3.6+7feeb73304 requires version 0.16.9 or later of mod 'Fabric Loader' (fabricloader), but only the wrong version is present: 0.16.7!
+	 - Mod 'Fabric Data Attachment API (v1)' (fabric-data-attachment-api-v1) 1.5.2+2d7e411e04 requires version 0.16.9 or later of mod 'Fabric Loader' (fabricloader), but only the wrong version is present: 0.16.7!
+	 - Mod 'Fabric Entity Events (v1)' (fabric-entity-events-v1) 2.0.13+1934821104 requires version 0.16.9 or later of mod 'Fabric Loader' (fabricloader), but only the wrong version is present: 0.16.7!
+	 - Mod 'Fabric Object Builder API (v1)' (fabric-object-builder-api-v1) 18.0.11+7d48d43904 requires version 0.16.9 or later of mod 'Fabric Loader' (fabricloader), but only the wrong version is present: 0.16.7!
+	 - Mod 'Fabric Networking API (v1)' (fabric-networking-api-v1) 4.3.10+8998135104 requires version 0.16.9 or later of mod 'Fabric Loader' (fabricloader), but only the wrong version is present: 0.16.7!
+	 - Mod 'Fabric Data Generation API (v1)' (fabric-data-generation-api-v1) 22.2.9+20ea1e2304 requires version 0.16.9 or later of mod 'Fabric Loader' (fabricloader), but only the wrong version is present: 0.16.7!
+	 - Mod 'Fabric Tag API (v1)' (fabric-tag-api-v1) 1.0.5+7d48d43904 requires version 0.16.9 or later of mod 'Fabric Loader' (fabricloader), but only the wrong version is present: 0.16.7!
+	 - Mod 'Fabric Dimensions API (v1)' (fabric-dimensions-v1) 4.0.10+7feeb73304 requires version 0.16.9 or later of mod 'Fabric Loader' (fabricloader), but only the wrong version is present: 0.16.7!
+	 - Mod 'Fabric Events Interaction (v0)' (fabric-events-interaction-v0) 4.0.3+a4eebcf004 requires version 0.16.9 or later of mod 'Fabric Loader' (fabricloader), but only the wrong version is present: 0.16.7!
+	 - Mod 'Fabric Game Rule API (v1)' (fabric-game-rule-api-v1) 1.0.63+7d48d43904 requires version 0.16.9 or later of mod 'Fabric Loader' (fabricloader), but only the wrong version is present: 0.16.7!
+	 - Mod 'Fabric Game Test API (v1)' (fabric-gametest-api-v1) 2.0.24+7feeb73304 requires version 0.16.9 or later of mod 'Fabric Loader' (fabricloader), but only the wrong version is present: 0.16.7!
+	 - Mod 'Fabric Item API (v1)' (fabric-item-api-v1) 11.1.17+203e6b2304 requires version 0.16.9 or later of mod 'Fabric Loader' (fabricloader), but only the wrong version is present: 0.16.7!
+	 - Mod 'Fabric Item Group API (v1)' (fabric-item-group-api-v1) 4.1.26+9a56a7cd04 requires version 0.16.9 or later of mod 'Fabric Loader' (fabricloader), but only the wrong version is present: 0.16.7!
+	 - Mod 'Fabric Key Binding API (v1)' (fabric-key-binding-api-v1) 1.0.57+7d48d43904 requires version 0.16.9 or later of mod 'Fabric Loader' (fabricloader), but only the wrong version is present: 0.16.7!
+	 - Mod 'Fabric Key Bindings (v0)' (fabric-keybindings-v0) 0.2.55+df3654b304 requires version 0.16.9 or later of mod 'Fabric Loader' (fabricloader), but only the wrong version is present: 0.16.7!
+	 - Mod 'Fabric Loot API (v2)' (fabric-loot-api-v2) 3.0.36+3f89f5a504 requires version 0.16.9 or later of mod 'Fabric Loader' (fabricloader), but only the wrong version is present: 0.16.7!
+	 - Mod 'Fabric Loot API (v3)' (fabric-loot-api-v3) 1.0.24+203e6b2304 requires version 0.16.9 or later of mod 'Fabric Loader' (fabricloader), but only the wrong version is present: 0.16.7!
+	 - Mod 'Fabric Message API (v1)' (fabric-message-api-v1) 6.0.25+7feeb73304 requires version 0.16.9 or later of mod 'Fabric Loader' (fabricloader), but only the wrong version is present: 0.16.7!
+	 - Mod 'Fabric Model Loading API (v1)' (fabric-model-loading-api-v1) 4.2.1+8041d50704 requires version 0.16.9 or later of mod 'Fabric Loader' (fabricloader), but only the wrong version is present: 0.16.7!
+	 - Mod 'Fabric Particles (v1)' (fabric-particles-v1) 4.0.14+7feeb73304 requires version 0.16.9 or later of mod 'Fabric Loader' (fabricloader), but only the wrong version is present: 0.16.7!
+	 - Mod 'Fabric Recipe API (v1)' (fabric-recipe-api-v1) 8.0.9+160b66fa04 requires version 0.16.9 or later of mod 'Fabric Loader' (fabricloader), but only the wrong version is present: 0.16.7!
+	 - Mod 'Fabric Registry Sync (v0)' (fabric-registry-sync-v0) 6.1.7+e359e31604 requires version 0.16.9 or later of mod 'Fabric Loader' (fabricloader), but only the wrong version is present: 0.16.7!
+	 - Mod 'Fabric Renderer API (v1)' (fabric-renderer-api-v1) 5.0.3+50f0feb204 requires version 0.16.9 or later of mod 'Fabric Loader' (fabricloader), but only the wrong version is present: 0.16.7!
+	 - Mod 'Fabric Renderer - Indigo' (fabric-renderer-indigo) 2.0.3+50f0feb204 requires version 0.16.9 or later of mod 'Fabric Loader' (fabricloader), but only the wrong version is present: 0.16.7!
+	 - Mod 'Fabric Rendering Data Attachment (v1)' (fabric-rendering-data-attachment-v1) 0.3.57+73761d2e04 requires version 0.16.9 or later of mod 'Fabric Loader' (fabricloader), but only the wrong version is present: 0.16.7!
+	 - Mod 'Fabric Rendering Fluids (v1)' (fabric-rendering-fluids-v1) 3.1.19+7feeb73304 requires version 0.16.9 or later of mod 'Fabric Loader' (fabricloader), but only the wrong version is present: 0.16.7!
+	 - Mod 'Fabric Rendering (v1)' (fabric-rendering-v1) 10.1.2+b874120c04 requires version 0.16.9 or later of mod 'Fabric Loader' (fabricloader), but only the wrong version is present: 0.16.7!
+	 - Mod 'Fabric Resource Conditions API (v1)' (fabric-resource-conditions-api-v1) 5.0.13+203e6b2304 requires version 0.16.9 or later of mod 'Fabric Loader' (fabricloader), but only the wrong version is present: 0.16.7!
+	 - Mod 'Fabric Screen API (v1)' (fabric-screen-api-v1) 2.0.38+7feeb73304 requires version 0.16.9 or later of mod 'Fabric Loader' (fabricloader), but only the wrong version is present: 0.16.7!
+	 - Mod 'Fabric Screen Handler API (v1)' (fabric-screen-handler-api-v1) 1.3.114+7feeb73304 requires version 0.16.9 or later of mod 'Fabric Loader' (fabricloader), but only the wrong version is present: 0.16.7!
+	 - Mod 'Fabric Sound API (v1)' (fabric-sound-api-v1) 1.0.32+7feeb73304 requires version 0.16.9 or later of mod 'Fabric Loader' (fabricloader), but only the wrong version is present: 0.16.7!
+	 - Mod 'Fabric Transfer API (v1)' (fabric-transfer-api-v1) 5.4.9+efa825c904 requires version 0.16.9 or later of mod 'Fabric Loader' (fabricloader), but only the wrong version is present: 0.16.7!
+	 - Mod 'Fabric Transitive Access Wideners (v1)' (fabric-transitive-access-wideners-v1) 6.3.2+56e78b9b04 requires version 0.16.9 or later of mod 'Fabric Loader' (fabricloader), but only the wrong version is present: 0.16.7!
+	at net.fabricmc.loader.impl.FormattedException.ofLocalized(FormattedException.java:51) ~[fabric-loader-0.16.7.jar:?]
+	at net.fabricmc.loader.impl.FabricLoaderImpl.load(FabricLoaderImpl.java:196) ~[fabric-loader-0.16.7.jar:?]
+	at net.fabricmc.loader.impl.launch.knot.Knot.init(Knot.java:146) ~[fabric-loader-0.16.7.jar:?]
+	at net.fabricmc.loader.impl.launch.knot.Knot.launch(Knot.java:68) [fabric-loader-0.16.7.jar:?]
+	at net.fabricmc.loader.impl.launch.knot.KnotClient.main(KnotClient.java:23) [fabric-loader-0.16.7.jar:?]
+	at net.fabricmc.devlaunchinjector.Main.main(Main.java:86) [dev-launch-injector-0.2.1+build.8.jar:?]
