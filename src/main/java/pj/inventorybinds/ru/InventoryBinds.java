@@ -19,6 +19,7 @@ import pj.inventorybinds.ru.gui.buttons.PJButtonWidget;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class InventoryBinds implements ModInitializer {
 
@@ -202,7 +203,7 @@ public class InventoryBinds implements ModInitializer {
                     String server = "";
 
                     try {
-                        server = MinecraftClient.getInstance().getNetworkHandler().getServerInfo().address;
+                        server = Objects.requireNonNull(Objects.requireNonNull(MinecraftClient.getInstance().getNetworkHandler()).getServerInfo()).address;
                     } catch (Exception e){
                         server = "null";
                     }

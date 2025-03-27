@@ -13,12 +13,13 @@ import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
+import java.util.function.Supplier;
 
 import static pj.inventorybinds.ru.InventoryBinds.MOD_ID;
 
 public class DynamicTextureManager {
 
-    private static HashMap<String, Identifier> stringIdentifierHashMap = new HashMap<>();
+    private static final HashMap<String, Identifier> stringIdentifierHashMap = new HashMap<>();
 
 
     public static void loadDynamicTextures(String url) {
@@ -82,11 +83,7 @@ public class DynamicTextureManager {
 
             connection.disconnect();
 
-            if (contentType != null && contentType.toLowerCase().startsWith("image/")) {
-                return true;
-            }
-
-            return false;
+            return contentType != null && contentType.toLowerCase().startsWith("image/");
 
         } catch (IOException e) {
             return false;
@@ -107,7 +104,8 @@ public class DynamicTextureManager {
             NativeImage nativeImage = bufferedImageToNativeImage(bufferedImage);
 
             TextureManager textureManager = MinecraftClient.getInstance().getTextureManager();
-            textureManager.registerTexture(Identifier.of(MOD_ID, createSHA256HashFromUrl(imageUrl)), new NativeImageBackedTexture(nativeImage));
+            Supplier<String> supplier = null;
+            textureManager.registerTexture(Identifier.of(MOD_ID, createSHA256HashFromUrl(imageUrl)), new NativeImageBackedTexture(supplier,  nativeImage));
 
             DynamicTextureManager.addDynamicTexture(createSHA256HashFromUrl(imageUrl), Identifier.of(MOD_ID, createSHA256HashFromUrl(imageUrl)));
 

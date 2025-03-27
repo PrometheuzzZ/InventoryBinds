@@ -8,6 +8,5 @@
   "gui.inventorybinds.save": "Сохранить",
   "gui.inventorybinds.delete": "Удалить",
   "gui.inventorybinds.cancel": "Отмена",
-  "gui.inventorybinds.hidden": "Скрыть команду",
-  "gui.inventorybinds.swap": "ЛКМ+Alt - переместить вверх, ПКМ+Alt - переместить вниз"
+  "gui.inventorybinds.hidden": "Скрыть команду"
 }

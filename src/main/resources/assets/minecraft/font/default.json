@@ -19,6 +19,13 @@
 			"ascent": 7,
 			"height": 8,
 			"chars": ["異"]
+		},
+		{
+			"type": "bitmap",
+			"file": "inventorybinds:font/keys.png",
+			"ascent": 7,
+			"height": 74,
+			"chars": ["ㄷ"]
 		}
 	]
 }

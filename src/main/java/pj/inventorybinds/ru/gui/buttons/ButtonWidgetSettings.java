@@ -19,7 +19,8 @@ public class ButtonWidgetSettings extends PJButtonWidget {
         super(screen, buttonIndex, row, description, items, button -> {
 
 
-                ScreenHandler currentScreenHandler = MinecraftClient.getInstance().player.currentScreenHandler;
+            assert MinecraftClient.getInstance().player != null;
+            ScreenHandler currentScreenHandler = MinecraftClient.getInstance().player.currentScreenHandler;
                 Item item = currentScreenHandler.getCursorStack().getItem();
                 Identifier itemInd = Registries.ITEM.getId(item);
                 String itemId = itemInd.getPath();

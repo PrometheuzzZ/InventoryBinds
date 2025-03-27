@@ -39,6 +39,7 @@ public class PJButtonWidget extends TexturedButtonWidget {
 
     private static final Identifier TEXTURE_MAIN = Identifier.of(MOD_ID, "textures/gui/button_empty.png");
     private static final Identifier TEXTURE_SETTINGS = Identifier.of(MOD_ID, "textures/gui/button_settings.png");
+    private static final Identifier TEXTURE_SWAP = Identifier.of(MOD_ID, "textures/gui/keys.png");
     private final List<Text> description;
     private final int line;
     private final int row;
@@ -137,7 +138,16 @@ public class PJButtonWidget extends TexturedButtonWidget {
 
             if (!setting) {
                 if (isShiftDown) {
-                    context.drawTooltip(MinecraftClient.getInstance().textRenderer, Text.translatable("gui.inventorybinds.swap"), mouseX - offset, mouseY);
+
+                    List<Text> swapList = new ArrayList<>();
+                    swapList.add(Text.literal("ㄷ"));
+                    swapList.add(Text.literal(" "));
+                    swapList.add(Text.literal(" "));
+                    swapList.add(Text.literal(" "));
+
+                    context.drawTooltip(MinecraftClient.getInstance().textRenderer, swapList, mouseX - offset, mouseY);
+
+
                 } else {
                     context.drawTooltip(MinecraftClient.getInstance().textRenderer, this.description, mouseX - offset, mouseY);
                 }
@@ -206,7 +216,7 @@ public class PJButtonWidget extends TexturedButtonWidget {
         if (this.isHovered()) {
             offset = 20;
         }
-        RenderSystem.enableDepthTest();
+       // RenderSystem.enableDepthTest();
 
         if (!setting) {
             this.drawTexture(context, TEXTURE_MAIN, this.getX(), this.getY(), 0, 0, offset, this.width, this.height, 20, 40);
@@ -216,13 +226,11 @@ public class PJButtonWidget extends TexturedButtonWidget {
 
         if (this.itemID.contains("https")) {
 
-            if(itemID.contains(".webp")){
+            if (itemID.contains(".webp")) {
                 this.drawTexture(context, Identifier.of(MOD_ID, "textures/gui/missing_item.png"), this.getX() + 2, this.getY() + 2, 0, 0, 0, 16, 16, 16, 16);
-
             } else {
 
                 String url = this.itemID;
-
 
                 boolean loaded = DynamicTextureManager.checkTextureByURL(url);
 
@@ -258,7 +266,7 @@ public class PJButtonWidget extends TexturedButtonWidget {
             i = v + hoveredVOffset;
         }
 
-        RenderSystem.enableDepthTest();
+        //RenderSystem.enableDepthTest();
         context.drawTexture(RenderLayer::getGuiTextured, texture, x, y, (float) u, (float) i, width, height, textureWidth, textureHeight);
 
     }

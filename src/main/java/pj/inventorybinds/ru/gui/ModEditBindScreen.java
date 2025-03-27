@@ -11,7 +11,8 @@ import net.minecraft.text.Text;
 import pj.inventorybinds.ru.config.ButtonsConfig;
 import pj.inventorybinds.ru.config.buttons.ButtonJson;
 
-import static pj.inventorybinds.ru.config.ButtonsConfig.addButtonToButtonsList;
+import java.util.Objects;
+
 import static pj.inventorybinds.ru.config.ButtonsConfig.editButtonById;
 
 public class ModEditBindScreen extends LightweightGuiDescription {
@@ -25,48 +26,49 @@ public class ModEditBindScreen extends LightweightGuiDescription {
 
     public ModEditBindScreen(ButtonJson buttonJsonB) {
         buttonJson = buttonJsonB;
-        WGridPanel root = new WGridPanel();
+        WPlainPanel root = new WPlainPanel();
         this.setRootPanel(root);
         root.setSize(200, 200);
         root.setInsets(Insets.ROOT_PANEL);
 
         WLabel screenName = new WLabel(Text.translatable("gui.inventorybinds.edit_bind"));
-        root.add(screenName, 0, 0, 13, 1);
+        screenName.setHorizontalAlignment(HorizontalAlignment.CENTER);
+        root.add(screenName, 0, 0, 200, 1);
 
         WLabel bindNameText = new WLabel(Text.translatable("gui.inventorybinds.bind_name"));
-        root.add(bindNameText, 0, 1, 7, 1);
+        root.add(bindNameText, 0, 19, 200, 1);
         bindName = new WTextField();
         bindName.setText(buttonJson.getName());
-        root.add(bindName, 0, 2, 10, 1);
+        root.add(bindName, 0, 32, 200, 1);
 
         WLabel bindCommandText = new WLabel(Text.translatable("gui.inventorybinds.bind_cmd"));
-        root.add(bindCommandText, 0, 4, 7, 1);
+        root.add(bindCommandText, 0, 61, 200, 1);
         bindCommand = new WTextField();
         bindCommand.setMaxLength(200);
         bindCommand.setText(buttonJson.getCommand());
-        root.add(bindCommand, 0, 5, 10, 1);
+        root.add(bindCommand, 0, 74, 200, 1);
 
         WLabel bindIconText = new WLabel(Text.translatable("gui.inventorybinds.item_id"));
-        root.add(bindIconText, 0, 7, 7, 1);
+        root.add(bindIconText, 0, 103, 7, 1);
         bindIcon = new WTextField();
         bindIcon.setMaxLength(200);
         bindIcon.setText(buttonJson.getItemId());
-        root.add(bindIcon, 0, 8, 10, 1);
+        root.add(bindIcon, 0, 116, 200, 1);
 
         hidden = new WToggleButton(Text.translatable("gui.inventorybinds.hidden"));
         hidden.setToggle(buttonJson.getHide());
-        root.add(hidden, 0, 10, 7, 1);
+        root.add(hidden, 0, 148, 50, 16);
 
         serverBind = new WToggleButton(Text.translatable("gui.inventorybinds.server_only"));
         serverBind.setToggle(!buttonJson.getServer().equalsIgnoreCase("*"));
-        root.add(serverBind, 0, 12, 7, 1);
+        root.add(serverBind, 0, 173, 50, 16);
 
         WButton save = new WButton(Text.translatable("gui.inventorybinds.save"));
-        root.add(save, 0, 14, 5, 1);
+        root.add(save, 0, 200, 98, 16);
         save.setOnClick(ModEditBindScreen::saveBind);
         WButton delete = new WButton(Text.translatable("gui.inventorybinds.delete"));
         delete.setOnClick(ModEditBindScreen::deleteBind);
-        root.add(delete, 6, 14, 5, 1);
+        root.add(delete, 104, 200, 98, 16);
 
 
 
@@ -100,7 +102,7 @@ public class ModEditBindScreen extends LightweightGuiDescription {
             String server = "";
 
             try {
-                server = MinecraftClient.getInstance().getNetworkHandler().getServerInfo().address;
+                server = Objects.requireNonNull(Objects.requireNonNull(MinecraftClient.getInstance().getNetworkHandler()).getServerInfo()).address;
             } catch (Exception e){
                 server = "null";
             }
@@ -117,13 +119,13 @@ public class ModEditBindScreen extends LightweightGuiDescription {
     }
 
     private static void exit() {
+        assert MinecraftClient.getInstance().player != null;
         MinecraftClient.getInstance().setScreen(new InventoryScreen(MinecraftClient.getInstance().player));
     }
 
 
     @Override
     public TriState isDarkMode() {
-        // TRUE to force dark mode, FALSE to force light mode, DEFAULT to use the global setting
         return TriState.TRUE;
     }
 }
